@@ -1,0 +1,795 @@
+{
+  "version": 2,
+  "events": [
+    {
+      "id": "ev-3-promise",
+      "who": "me",
+      "type": "promise",
+      "what": "로고 디자인 가격을 시안 2종과 최종 파일(AI, PNG) 기준 80만 원으로 제시했고, 상대방이 동의함",
+      "sentAt": "2026-06-02T14:15:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": 800000,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 3,
+          "seqTo": 4,
+          "quote": "로고 디자인은 시안 2종 + 최종 파일(AI, PNG) 기준으로 80만 원이에요. / 네 그렇게 해요"
+        },
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 44,
+          "seqTo": 44,
+          "quote": "로고 80만 원, 선금 40만 원 / 납품 후 잔금 40만 원"
+        },
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 46,
+          "seqTo": 46,
+          "quote": "네 알겠습니다"
+        }
+      ],
+      "amountKind": "total",
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-5-other",
+      "who": "me",
+      "type": "other",
+      "what": "선금 40만 원(50%)을 입금하면 작업을 시작하겠다고 요청함",
+      "sentAt": "2026-06-02T14:21:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": 400000,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 5,
+          "seqTo": 5,
+          "quote": "선금 50%(40만 원) 주시면 작업 시작할게요."
+        }
+      ],
+      "amountKind": "deposit",
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-6-promise",
+      "who": "me",
+      "type": "promise",
+      "what": "기본 포함 수정 횟수를 2번으로 약속함",
+      "sentAt": "2026-06-02T14:22:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 6,
+          "seqTo": 6,
+          "quote": "그리고 수정은 2번까지 포함이에요."
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": 2
+    },
+    {
+      "id": "ev-44-promise",
+      "who": "me",
+      "type": "promise",
+      "what": "선금 40만 원",
+      "sentAt": "2026-06-02T15:06:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": 400000,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 44,
+          "seqTo": 44,
+          "quote": "선금 40만 원 / 납품 후 잔금 40만 원"
+        },
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 46,
+          "seqTo": 46,
+          "quote": "네 알겠습니다"
+        }
+      ],
+      "amountKind": "deposit",
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-44-promise-2",
+      "who": "me",
+      "type": "promise",
+      "what": "납품 후 잔금 40만 원 지급으로 정리",
+      "sentAt": "2026-06-02T15:06:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": 400000,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 44,
+          "seqTo": 44,
+          "quote": "납품 후 잔금 40만 원"
+        },
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 46,
+          "seqTo": 46,
+          "quote": "네 알겠습니다"
+        }
+      ],
+      "amountKind": "balance",
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-45-promise",
+      "who": "me",
+      "type": "promise",
+      "what": "기본 포함 수정 횟수 2번으로 정리",
+      "sentAt": "2026-06-02T15:06:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 45,
+          "seqTo": 45,
+          "quote": "수정은 2번까지 포함이고, 추가 수정은 회당 5만 원이에요."
+        },
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 46,
+          "seqTo": 46,
+          "quote": "네 알겠습니다"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": 2
+    },
+    {
+      "id": "ev-45-promise-2",
+      "who": "me",
+      "type": "promise",
+      "what": "추가 수정 1회당 단가 5만 원으로 정리",
+      "sentAt": "2026-06-02T15:06:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": 50000,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 45,
+          "seqTo": 45,
+          "quote": "추가 수정은 회당 5만 원이에요."
+        },
+        {
+          "sourceId": "src-kakao_haeun_extra",
+          "seqFrom": 46,
+          "seqTo": 46,
+          "quote": "네 알겠습니다"
+        }
+      ],
+      "amountKind": "per_revision",
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-12-payment",
+      "who": "counterparty",
+      "type": "payment",
+      "what": "선금 40만 원을 보냈다고 말함(sentAt 6/3, 사건일은 보낸 날짜 기준)",
+      "sentAt": "2026-06-03T11:05:00+09:00",
+      "eventDate": "2026-06-03",
+      "amount": 400000,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 12,
+          "seqTo": 12,
+          "quote": "선금 40만 원 보냈어요"
+        },
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 13,
+          "seqTo": 13,
+          "quote": "어제 보내주신 선금 확인했어요. 작업 시작하겠습니다!"
+        }
+      ],
+      "amountKind": "deposit",
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-11-promise",
+      "who": "me",
+      "type": "promise",
+      "what": "6월 10일까지 시안을 제출하겠다고 약속함",
+      "sentAt": "2026-06-02T14:40:00+09:00",
+      "eventDate": "2026-06-10",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 11,
+          "seqTo": 11,
+          "quote": "확인했어요! 6월 10일까지 시안 드릴게요."
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-14-delivery",
+      "who": "me",
+      "type": "delivery",
+      "what": "시안 2종을 전달함",
+      "sentAt": "2026-06-10T18:00:00+09:00",
+      "eventDate": "2026-06-10",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 14,
+          "seqTo": 14,
+          "quote": "사장님 시안 2종 보내드려요!"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-17-other",
+      "who": "counterparty",
+      "type": "other",
+      "what": "2번 시안으로 진행하겠다고 선택함",
+      "sentAt": "2026-06-10T21:12:00+09:00",
+      "eventDate": "2026-06-10",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 17,
+          "seqTo": 17,
+          "quote": "오 좋네요! 2번 시안으로 갈게요"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-18-revision_request",
+      "who": "counterparty",
+      "type": "revision_request",
+      "what": "1차 수정 요청: 글씨체를 조금 더 둥글게 변경",
+      "sentAt": "2026-06-11T10:20:00+09:00",
+      "eventDate": "2026-06-11",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 18,
+          "seqTo": 19,
+          "quote": "글씨체만 조금 더 둥글게 바꿔주실 수 있을까요? / 네 수정 1회차로 반영할게요!"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-20-delivery",
+      "who": "me",
+      "type": "delivery",
+      "what": "수정본을 전달함",
+      "sentAt": "2026-06-12T15:40:00+09:00",
+      "eventDate": "2026-06-12",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 20,
+          "seqTo": 20,
+          "quote": "수정본 보내드려요"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-22-revision_request",
+      "who": "counterparty",
+      "type": "revision_request",
+      "what": "2차 수정 요청: 컵 아이콘을 더 작게 변경",
+      "sentAt": "2026-06-13T13:15:00+09:00",
+      "eventDate": "2026-06-13",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 22,
+          "seqTo": 23,
+          "quote": "컵 아이콘을 조금 더 작게 해주세요 / 네 수정 2회차로 반영하겠습니다"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-24-delivery",
+      "who": "me",
+      "type": "delivery",
+      "what": "2회차 수정본을 전달함",
+      "sentAt": "2026-06-14T11:00:00+09:00",
+      "eventDate": "2026-06-14",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 24,
+          "seqTo": 24,
+          "quote": "2회차 수정본입니다"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-26-revision_request",
+      "who": "counterparty",
+      "type": "revision_request",
+      "what": "3차 수정 요청: 색을 조금 더 진하게 변경",
+      "sentAt": "2026-06-16T16:30:00+09:00",
+      "eventDate": "2026-06-16",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 26,
+          "seqTo": 28,
+          "quote": "색만 조금 더 진하게 해볼 수 있을까요? / 일단 해주세요"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-27-other",
+      "who": "me",
+      "type": "other",
+      "what": "이번이 3번째 수정이라 추가 비용이 생길 수 있다고 안내함(금액 언급 없음)",
+      "sentAt": "2026-06-16T16:35:00+09:00",
+      "eventDate": "2026-06-16",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 27,
+          "seqTo": 27,
+          "quote": "이번이 3번째 수정이라 추가 비용이 생길 수 있어요."
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-29-delivery",
+      "who": "me",
+      "type": "delivery",
+      "what": "3회차 수정본을 전달함",
+      "sentAt": "2026-06-17T14:00:00+09:00",
+      "eventDate": "2026-06-17",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 29,
+          "seqTo": 29,
+          "quote": "3회차 수정본 보내드려요"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-31-revision_request",
+      "who": "counterparty",
+      "type": "revision_request",
+      "what": "방향 변경 요청: 우드톤에서 화이트 미니멀로 변경",
+      "sentAt": "2026-06-18T10:10:00+09:00",
+      "eventDate": "2026-06-18",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 31,
+          "seqTo": 33,
+          "quote": "방향을 바꿔볼게요. 우드톤 말고 화이트 미니멀로요 / 그건 거의 새 시안 작업이라 시간이 좀 더 걸려요. / 네"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-32-change_request",
+      "who": "me",
+      "type": "change_request",
+      "what": "방향 변경에 따라 납기를 20일로 조정함(상대방 '네' 동의)",
+      "sentAt": "2026-06-18T10:20:00+09:00",
+      "eventDate": "2026-06-20",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 32,
+          "seqTo": 33,
+          "quote": "20일까지 드릴게요. / 네"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-34-delivery",
+      "who": "me",
+      "type": "delivery",
+      "what": "최종본(AI, PNG)과 파일명을 전달함",
+      "sentAt": "2026-06-20T19:30:00+09:00",
+      "eventDate": "2026-06-20",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 34,
+          "seqTo": 36,
+          "quote": "최종본 보내드려요! AI 파일과 PNG 같이 드립니다. / 파일: onsaemiro_logo_final.ai"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-37-complaint",
+      "who": "counterparty",
+      "type": "complaint",
+      "what": "최종본이 마음에 들지 않아 잔금 지급을 고민하겠다고 말함",
+      "sentAt": "2026-06-21T12:40:00+09:00",
+      "eventDate": "2026-06-21",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 37,
+          "seqTo": 37,
+          "quote": "최종본이 마음에 안 들어서 잔금은 좀 생각해볼게요"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-38-other",
+      "who": "me",
+      "type": "other",
+      "what": "요청한 방향대로 작업했으며 불만 부분을 말해 달라고 답함",
+      "sentAt": "2026-06-21T13:05:00+09:00",
+      "eventDate": "2026-06-21",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 38,
+          "seqTo": 38,
+          "quote": "요청하신 방향대로 작업했는데 어떤 부분이 마음에 안 드시는지 말씀해주시면"
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-39-other",
+      "who": "me",
+      "type": "other",
+      "what": "잔금 40만 원 입금을 요청함(입금 여부는 대화에 없음: 확인 불가)",
+      "sentAt": "2026-06-28T10:00:00+09:00",
+      "eventDate": "2026-06-28",
+      "amount": 400000,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 39,
+          "seqTo": 39,
+          "quote": "잔금 40만 원 입금 부탁드려요."
+        }
+      ],
+      "amountKind": "balance",
+      "revisionsIncluded": null
+    },
+    {
+      "id": "ev-41-other",
+      "who": "me",
+      "type": "other",
+      "what": "잔금 관련 재연락 및 답변 요청(상대방 응답은 대화에 없음: 확인 불가)",
+      "sentAt": "2026-07-05T15:00:00+09:00",
+      "eventDate": "2026-07-05",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "src-kakao_haeun",
+          "seqFrom": 41,
+          "seqTo": 41,
+          "quote": "잔금 관련해서 다시 연락드려요. 답변 부탁드립니다."
+        }
+      ],
+      "amountKind": null,
+      "revisionsIncluded": null
+    }
+  ],
+  "settlement": [
+    {
+      "key": "base",
+      "label": "기본 계약 금액",
+      "amount": 800000,
+      "formula": "800,000",
+      "eventIds": [
+        "ev-3-promise"
+      ],
+      "status": "confirmed",
+      "note": ""
+    },
+    {
+      "key": "paid",
+      "label": "확인된 지급액",
+      "amount": null,
+      "formula": "확인 불가",
+      "eventIds": [
+        "ev-12-payment"
+      ],
+      "status": "pending",
+      "note": "주장만 있음: 400,000원 (이체 내역 필요) · 결론 보류(증거 요청 req-deposit-transfer): 선금 40만 원이 상대방 계좌에서 나로 이체된 내역(이체 일시, 금액, 입금자명이 보이는 이체확인증 또는 거래내역 캡처)이 있나요?"
+    },
+    {
+      "key": "unpaid",
+      "label": "정산상 미지급액",
+      "amount": null,
+      "formula": "확인 불가",
+      "eventIds": [
+        "ev-3-promise"
+      ],
+      "status": "pending",
+      "note": "확인된 입금 내역이 없어 계산할 수 없어요 · 결론 보류(증거 요청 req-deposit-transfer): 선금 40만 원이 상대방 계좌에서 나로 이체된 내역(이체 일시, 금액, 입금자명이 보이는 이체확인증 또는 거래내역 캡처)이 있나요? · 결론 보류(증거 요청 req-balance-transfer): 잔금 40만 원이 입금된 기록(이체확인증 또는 거래내역)이 있나요? 있다면 입금 일시와 금액을 알려주세요."
+    },
+    {
+      "key": "disputed",
+      "label": "다툼이 있는 추가금",
+      "amount": 100000,
+      "formula": "2회 × 50,000 = 100,000",
+      "eventIds": [
+        "ev-26-revision_request",
+        "ev-31-revision_request",
+        "ev-45-promise",
+        "ev-45-promise-2"
+      ],
+      "status": "unverifiable",
+      "note": "기본 2회를 넘은 수정 3~4회차 기준이에요. 단가 합의 기록은 있지만, 이 수정을 추가 작업으로 볼지는 쟁점이에요"
+    }
+  ],
+  "issues": [
+    {
+      "id": "issue-revision-count",
+      "title": "수정 3~4회차는 추가 작업인가?",
+      "myClaim": "기본 포함 수정은 2회이며, 추가 수정은 회당 5만 원이라고 안내했고 상대방이 동의했다(#6, #45~46). 3차 수정 시점에 추가 비용이 생길 수 있다고 안내했다(#27).",
+      "otherClaim": "자료 없음. 3차 수정 요청 시 상대방은 '일단 해주세요'라고 말했다(#26~28).",
+      "facts": [
+        "수정 포함 횟수 2회와 추가 수정 회당 5만 원이 정리되었고, 상대방이 '네 알겠습니다'로 응답했다(#45~46).",
+        "1차 수정 요청(글씨체)과 2차 수정 요청(컵 아이콘)에 대해 나는 각각 1회차, 2회차로 반영하겠다고 답했다(#18~19, #22~23).",
+        "3차 수정 요청(색 진하게)에 상대방은 '일단 해주세요'라고 말했다(#26~28).",
+        "나는 6/16에 이번이 3번째 수정이라 추가 비용이 생길 수 있다고 안내했다(#27).",
+        "3회차 수정본이 6/17에 전달되었다(#29).",
+        "3차 수정 이후 추가 수정 비용의 금액과 적용 여부에 대한 합의 기록은 확인되지 않는다(#26~29, 확인 불가)."
+      ],
+      "supportsMe": [
+        "수정 2회 포함, 추가 1회당 5만 원으로 정리되었고 상대방이 동의했다(#45~46).",
+        "6/16에 3번째 수정 시 추가 비용 가능성을 안내했다(#27)."
+      ],
+      "supportsOther": [
+        "3차 수정 요청 시 '일단 해주세요'라고 말했다(#26~28).",
+        "6/16 안내 이후 3차 수정본이 전달되었고, 추가 비용에 대한 별도 합의 기록은 없다(#29, 확인 불가)."
+      ],
+      "toCheck": [
+        "3차 수정 요청 당시 추가 비용 안내에 대해 상대방이 어떻게 응답했는지 전체 대화 확인",
+        "수정 회차 계산 기준(요청 건수 기준인지 전달 건수 기준인지) 합의 여부 확인",
+        "계약서나 견적서 등 수정 조건을 기록한 문서 존재 여부 확인"
+      ],
+      "eventIds": [
+        "ev-6-promise",
+        "ev-45-promise",
+        "ev-45-promise-2",
+        "ev-18-revision_request",
+        "ev-22-revision_request",
+        "ev-26-revision_request",
+        "ev-27-other",
+        "ev-29-delivery"
+      ]
+    },
+    {
+      "id": "issue-direction-change",
+      "title": "방향 변경(우드톤→화이트 미니멀)은 수정 횟수에 포함되는가?",
+      "myClaim": "자료 없음. 방향 변경 시 납기를 20일로 조정한다고 안내했고 상대방이 '네'로 답했다(#32~33).",
+      "otherClaim": "자료 없음. 상대방은 방향을 바꾸겠다고 요청했다(#31).",
+      "facts": [
+        "6/18 상대방은 우드톤 대신 화이트 미니멀로 방향을 바꾸겠다고 요청했다(#31).",
+        "나는 이것이 거의 새 시안 작업이라 시간이 더 걸린다고 말했고, 상대방은 '네'라고 답했다(#31~33).",
+        "나는 20일까지 납품하겠다고 답했고 상대방이 '네'라고 답했다(#32~33).",
+        "방향 변경에 대한 비용 합의 기록은 자료에 없다(확인 불가, #31~33)."
+      ],
+      "supportsMe": [
+        "방향 변경 시 시간이 더 걸린다는 설명을 했고 상대방이 '네'로 응답했다(#31~33).",
+        "납기 20일 조정에 상대방이 동의했다(#32~33)."
+      ],
+      "supportsOther": [
+        "방향 변경은 상대방이 요청한 사항이다(#31)."
+      ],
+      "toCheck": [
+        "방향 변경이 기존 80만 원 패키지 범위에 포함되는지에 대한 합의 기록 확인",
+        "'거의 새 시안 작업'에 대해 추가 비용을 언급한 대화가 있었는지 확인"
+      ],
+      "eventIds": [
+        "ev-31-revision_request",
+        "ev-32-change_request",
+        "ev-3-promise"
+      ]
+    },
+    {
+      "id": "issue-balance-payment",
+      "title": "잔금 지급 의무와 금액은 어떻게 되는가?",
+      "myClaim": "잔금은 납품 후 40만 원으로 정리되었다고 주장한다(#44, #46). 6/28에 잔금 입금을 요청했고 7/5에 다시 연락했다(#39, #41).",
+      "otherClaim": "상대방은 최종본이 마음에 들지 않아 잔금을 생각해보겠다고 말했다(#37).",
+      "facts": [
+        "잔금 40만 원을 납품 후 지급하는 것으로 정리되었고 상대방이 '네 알겠습니다'로 응답했다(#44, #46).",
+        "6/20 최종본(AI, PNG)과 파일명이 전달되었다(#34~36).",
+        "6/21 상대방은 최종본이 마음에 들지 않아 잔금은 좀 생각해보겠다고 말했다(#37).",
+        "나는 6/21 어떤 부분이 마음에 들지 않는지 말해 달라고 요청했다(#38).",
+        "6/28 잔금 40만 원 입금을 요청했다(#39).",
+        "7/5 잔금 관련해 다시 연락하며 답변을 요청했다(#41).",
+        "잔금 입금 여부와 상대방의 이후 응답은 자료에 없다(확인 불가)."
+      ],
+      "supportsMe": [
+        "잔금 40만 원은 납품 후 지급으로 정리되었다(#44, #46).",
+        "6/28과 7/5에 입금 및 답변을 요청했다(#39, #41)."
+      ],
+      "supportsOther": [
+        "최종본에 대해 마음에 들지 않는다는 의사를 표명했다(#37)."
+      ],
+      "toCheck": [
+        "상대방이 말한 최종본의 불만 내용이 무엇인지 확인",
+        "최종본 전달 이후 상대방의 추가 답변과 잔금 입금 여부 확인",
+        "이체 내역 확인"
+      ],
+      "eventIds": [
+        "ev-44-promise-2",
+        "ev-34-delivery",
+        "ev-37-complaint",
+        "ev-38-other",
+        "ev-39-other",
+        "ev-41-other"
+      ]
+    },
+    {
+      "id": "issue-deposit-payment",
+      "title": "선금 40만 원은 실제로 입금되었는가?",
+      "myClaim": "선금 40만 원 입금을 요청했고(#5), 6/3 상대방의 입금 말에 '어제 보내주신 선금 확인했어요'라고 답했다(#13).",
+      "otherClaim": "상대방은 6/3 11:05에 선금 40만 원을 보냈다고 말했다(#12).",
+      "facts": [
+        "나는 6/2 선금 50%(40만 원) 입금 후 작업을 시작하겠다고 요청했다(#5).",
+        "상대방은 6/3 11:05에 '선금 40만 원 보냈어요'라고 말했다(#12).",
+        "나는 같은 날 '어제 보내주신 선금 확인했어요. 작업 시작하겠습니다!'라고 답했다(#13).",
+        "이체 내역과 정확한 입금 날짜는 자료에 없다(확인 불가)."
+      ],
+      "supportsMe": [
+        "나는 선금 확인 및 작업 시작 의사를 밝혔다(#13)."
+      ],
+      "supportsOther": [
+        "상대방은 선금 40만 원을 보냈다고 말했다(#12)."
+      ],
+      "toCheck": [
+        "은행 이체 내역으로 입금 여부, 금액, 날짜 확인",
+        "메시지의 '어제'가 6/2를 가리키는지 확인"
+      ],
+      "eventIds": [
+        "ev-5-other",
+        "ev-12-payment",
+        "ev-44-promise"
+      ]
+    }
+  ],
+  "evidenceRequests": [
+    {
+      "id": "req-deposit-transfer",
+      "question": "선금 40만 원이 상대방 계좌에서 나로 이체된 내역(이체 일시, 금액, 입금자명이 보이는 이체확인증 또는 거래내역 캡처)이 있나요?",
+      "why": "선금 40만 원은 상대방이 보냈다고 말했으나(#12) 이체 내역이 자료에 없어 입금 여부, 금액, 날짜를 확인할 수 없습니다. 상대방은 6/3에 보냈다고 했고 나는 6/3에 '어제 보내주신 선금 확인했어요'라고 답했기 때문에(#12~13) 실제 입금 날짜도 확인되지 않습니다.",
+      "blocks": [
+        "settlement",
+        "issue"
+      ],
+      "relatedIssueId": "issue-deposit-payment"
+    },
+    {
+      "id": "req-balance-transfer",
+      "question": "잔금 40만 원이 입금된 기록(이체확인증 또는 거래내역)이 있나요? 있다면 입금 일시와 금액을 알려주세요.",
+      "why": "상대방은 최종본에 대해 마음에 들지 않아 잔금을 고민하겠다고 했고(#37), 6/28 잔금 입금 요청(#39)과 7/5 재연락(#41)에 대한 상대방 응답은 자료에 없습니다. 잔금 입금 여부는 확인 불가입니다.",
+      "blocks": [
+        "settlement",
+        "issue"
+      ],
+      "relatedIssueId": "issue-balance-payment"
+    },
+    {
+      "id": "req-direction-change-terms",
+      "question": "우드톤에서 화이트 미니멀로 방향을 바꾸는 작업에 대해 추가 비용이나 작업 범위를 정한 메시지나 기록이 있나요?",
+      "why": "상대방은 방향 변경에 대해 시간이 더 걸린다는 말에 '네'라고 답했으나(#31~33) 비용이나 기존 80만 원 패키지 포함 여부에 대한 합의는 자료에 없습니다. 이 부분이 확인되어야 방향 변경이 수정 횟수에 포함되는지 판단할 수 있습니다.",
+      "blocks": [
+        "issue"
+      ],
+      "relatedIssueId": "issue-direction-change"
+    }
+  ],
+  "summary": "나는 로고 디자인을 시안 2종과 최종 파일 기준 80만 원으로 제시했고, 상대방이 동의하여 선금 40만 원과 잔금 40만 원으로 정리되었다(#3~4, #44, #46). 상대방은 6/3에 선금 40만 원을 보냈다고 말했으나 이체 내역은 자료에 없다(#12~13). 수정은 3차까지 요청되었고, 6/18 방향 변경 후 최종본이 전달되었으며, 상대방은 6/21 최종본이 마음에 들지 않아 잔금을 고민하겠다고 말했고, 나는 6/28과 7/5에 잔금 입금을 요청했으나 응답은 확인되지 않았다(#37~41).",
+  "oneSided": true,
+  "changedFromPrev": [
+    "ev-3-promise",
+    "ev-44-promise",
+    "ev-44-promise-2",
+    "ev-45-promise",
+    "ev-45-promise-2",
+    "issue-revision-count",
+    "issue-direction-change",
+    "issue-balance-payment",
+    "issue-deposit-payment",
+    "settlement:disputed"
+  ]
+}

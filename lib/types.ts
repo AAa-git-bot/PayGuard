@@ -44,6 +44,9 @@ export const CaseEventSchema = z.object({
   agreedByOther: z.enum(["yes", "no", "unknown"]),
   certainty: CertaintySchema,
   sources: z.array(SourceRefSchema).min(1),
+  // 정산 계산용 보조 정보 (선택, 화면 표시용 아님). 재분석 때 이전 사건을 다시 쓰기 위해 함께 저장한다.
+  amountKind: z.enum(["total", "deposit", "balance", "per_revision", "expense", "other"]).nullable().optional(),
+  revisionsIncluded: z.number().int().nullable().optional(),
 });
 export type CaseEvent = z.infer<typeof CaseEventSchema>;
 
@@ -111,4 +114,12 @@ export interface CaseMessage {
   sender: "me" | "counterparty" | "unknown";
   sentAt: string | null;
   text: string; // 마스킹된 텍스트
+}
+
+// 파이프라인에 넘기는 이미지 자료 (이체 내역·영수증). 실제 이름·계좌는 업로드 전에 가려져 있어야 한다.
+export interface CaseImage {
+  sourceId: string;
+  data: Uint8Array | string; // 바이트 또는 base64
+  mediaType: string; // 예: "image/png"
+  filename?: string;
 }

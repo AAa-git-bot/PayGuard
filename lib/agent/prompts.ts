@@ -67,3 +67,41 @@ export const NOTICE_DRAFT = `${BASE_RULES}
 export const CONTRACT_DRAFT = `확정된 Terms로 간단한 용역계약서 초안을 마크다운으로 작성하라.
 항목: 작업 범위, 수정 횟수와 초과 시 단가, 납기, 대금과 지급 시기, 중도 취소 시 정산, 저작권 귀속.
 Terms에 없는 항목은 "[협의 필요]"로 남긴다. 맨 위에 "초안"을 표시한다. 한국어로 쓴다.`;
+
+// ── 파이프라인 출력 필드 안내 (pipeline.ts가 사용자 입력 앞에 붙인다) ──
+// 시스템 프롬프트(PRD 8장)는 그대로 두고, 스키마의 보조 필드 쓰는 법만 설명한다.
+
+export const EXTRACT_EVENTS_GUIDE = `[출력 필드 안내]
+- sources.seqFrom/seqTo: 근거 메시지의 [seq] 번호. 대화에 없는 번호를 쓰지 않는다. quote는 원문 그대로 80자 이내.
+- eventDate: 메시지가 말하는 사건 날짜(YYYY-MM-DD). "어제", "그저께" 같은 표현은 보낸 날짜 기준으로 계산한다. 알 수 없으면 보낸 날짜.
+- amountKind: 금액의 성격. total(전체 계약 금액), deposit(선금), balance(잔금), per_revision(추가 수정 1회 단가), expense(지출), other. 금액이 없으면 null.
+- revisionsIncluded: 이 사건이 "기본 포함 수정 횟수"를 정하는 약속이면 그 횟수, 아니면 null.
+- 완성된 시안에 대한 변경 요청(글씨체·크기·색·방향 변경 등. 예: "색만 조금 더", "방향을 바꿔볼게요")은 revision_request로 분류한다.
+  change_request는 금액·범위·납기 등 계약 조건 자체를 바꾸자는 요청에만 쓴다.
+- 요청에 대한 승낙·진행 답장("네 반영할게요", "일단 해주세요")은 새 revision_request가 아니다.
+  요청 사건의 sources에 그 답장 seq를 함께 넣고, 상대가 동의한 것이면 agreedByOther에 반영한다.
+- payment는 돈을 실제로 보냈다·받았다는 언급에만 쓴다. 입금을 요청·독촉하는 메시지(예: "잔금 입금 부탁드려요")는
+  payment가 아니라 other로 두고 amountKind는 balance로 쓴다.
+- 한 메시지에 여러 조건(금액, 수정 횟수, 단가)이 있으면 조건마다 사건을 따로 만든다.
+- who: 해당 행동을 한 사람(나=me, 상대방=counterparty).`;
+
+export const DETECT_CONFLICTS_GUIDE = `[출력 필드 안내]
+- conflicts: 서로 모순되는 사건 쌍. eventIds에는 사건 목록의 id만 쓴다. 같은 대상에 대해 서로 다른 금액을 말하면 involvesAmount=true.
+- missing: 정산·쟁점 판단에 필요한데 자료에 없는 정보. 이미 사건 목록으로 확인되는 정보는 넣지 않는다.`;
+
+export const ANALYZE_ISSUES_GUIDE = `[출력 필드 안내]
+- facts, supportsMe, supportsOther의 각 문장 끝에 근거 seq를 "(#12)" 또는 "(#12~14)" 형식으로 붙인다.
+- eventIds에는 사건 목록의 id만 쓴다.
+- "이전 쟁점 목록"이 주어지면, 같은 주제의 쟁점은 같은 id를 그대로 쓴다. 새 쟁점만 새 id("issue-영문소문자")를 만든다.
+- 정산표의 금액은 코드가 계산한 값이다. 금액을 다시 계산하지 않는다.`;
+
+export const REQUEST_EVIDENCE_GUIDE = `[출력 필드 안내]
+- blocks에 "settlement"를 넣었다면 settlementKeys에 결론이 보류되는 정산 줄의 key(base, paid, unpaid, disputed, extra_expense, unknown)를 넣는다. 아니면 빈 배열.
+- relatedIssueId에는 쟁점 목록의 id만 쓴다. 관련 쟁점이 없으면 null.
+- 사건 목록에서 상대방의 명시적 동의(agreedByOther=yes)로 이미 확인된 조건은 다시 요청하지 않는다.
+- 증거 요청은 "자료"를 묻는다. 어느 쪽 해석이 맞는지(예: "이 수정이 추가 작업인가")는 쟁점 카드가 다루므로 증거 요청으로 만들지 않는다.
+  이미 사건 목록에 있는 메시지를 다시 보여 달라고 요청하지 않는다.
+  채팅에서 동의가 확인된 조건에 대해 계약서·견적서 같은 별도 문서를 추가로 요구하지 않는다. "[코드로 확인된 조건]"을 참고한다.
+- "이전 증거 요청"은 하나씩 현재 사건 목록(특히 "이번에 새로 추가된 사건")과 대조한다.
+  새 자료로 답이 나왔으면 그 요청은 빼고,
+  (예: "[코드로 확인된 조건]"에서 기본 포함 수정 횟수와 추가 수정 단가가 모두 "상대방 동의 확인됨"이면 수정 횟수·단가 합의 자료는 더 요청하지 않는다) 일부만 해결됐으면 남은 부분만 새 질문으로 다시 쓴다. 이전 문장을 그대로 복사하지 않는다.`;
