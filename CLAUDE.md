@@ -1,20 +1,3 @@
-# CLAUDE.md
-
-이 저장소의 기준 문서는 `PRD.md`다. 작업 전에 반드시 `PRD.md` 전체를 읽고, 3장 폴더 담당을 지킨다. 아래는 PRD.md와 같은 내용이다. PRD.md를 고치면 이 파일도 같이 고친다.
-
-<!-- BEGIN:nextjs-agent-rules -->
-
-## This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
-
-
----
-
 # PayGuard PRD (AI 코딩 도구용 설계 문서)
 
 > 이 문서는 PayGuard의 단일 기준 문서다. AI 코딩 도구(Claude Code, Cursor 등)는 작업 전에 항상 이 파일을 읽고, 여기 적힌 구조·이름·스키마를 그대로 따른다. 설계를 바꿔야 하면 코드보다 이 문서를 먼저 고친다.
