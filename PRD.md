@@ -33,16 +33,16 @@ PayGuard는 청년 프리랜서와 의뢰인의 채팅방에 AI가 참여자로 
 | 프레임워크 | Next.js 14+ (App Router, TypeScript) | 프론트와 API를 한 저장소에 |
 | 스타일 | Tailwind CSS + shadcn/ui | |
 | DB·실시간 | Supabase (PostgreSQL + Realtime) | 예방 모드 채팅에 Realtime 사용 |
-| LLM 호출 | Vercel AI SDK (`ai` 패키지) `generateObject` + `zod` | 구조화 출력(JSON) 강제, 이미지 입력 지원 |
-| LLM 모델 | 멀티모달 지원 모델 1종 (환경변수 `LLM_MODEL`) | 팀이 결정. 이미지 읽기 가능해야 함 |
+| LLM 호출 | Vercel AI SDK (`ai` + `@ai-sdk/anthropic` 패키지) `generateObject` + `zod` | 구조화 출력(JSON) 강제, 이미지 입력 지원 |
+| LLM 모델 | `claude-haiku-5-5` (환경변수 `LLM_MODEL`) | 이미지 읽기 지원. 품질이 부족하면 analyzeIssues 단계만 `claude-sonnet-5-5`로 교체 |
 | PDF | 인쇄 전용 페이지 + `window.print()` (인쇄 CSS) | 별도 PDF 라이브러리 없이 |
 | 배포 | Vercel | 환경변수는 Vercel 대시보드에 |
 
 ### 환경변수 (`.env.local`, Vercel)
 
 ```
-LLM_API_KEY=            # 서버 전용
-LLM_MODEL=              # 예: 사용하는 공급사의 멀티모달 모델명
+ANTHROPIC_API_KEY=      # 서버 전용 (@ai-sdk/anthropic이 이 이름을 자동으로 읽음)
+LLM_MODEL=claude-haiku-5-5
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=   # 서버 전용, 클라이언트 코드에서 import 금지
