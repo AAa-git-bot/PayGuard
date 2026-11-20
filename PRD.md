@@ -30,10 +30,10 @@ PayGuard는 청년 프리랜서와 의뢰인의 채팅방에 AI가 참여자로 
 
 | 영역 | 선택 | 비고 |
 | --- | --- | --- |
-| 프레임워크 | Next.js 14+ (App Router, TypeScript) | 프론트와 API를 한 저장소에 |
+| 프레임워크 | Next.js 16 (App Router, TypeScript) | 프론트와 API를 한 저장소에. 동적 라우트의 `params`는 Promise라 `await params`로 꺼낸다 |
 | 스타일 | Tailwind CSS + shadcn/ui | |
 | DB·실시간 | Supabase (PostgreSQL + Realtime) | 예방 모드 채팅에 Realtime 사용 |
-| LLM 호출 | Vercel AI SDK (`ai` + `@ai-sdk/anthropic` 패키지) `generateObject` + `zod` | 구조화 출력(JSON) 강제, 이미지 입력 지원 |
+| LLM 호출 | Vercel AI SDK v7 (`ai` + `@ai-sdk/anthropic`) `generateText` + `output: Output.object({ schema })` + `zod` v4 | 구조화 출력(JSON) 강제, 이미지 입력 지원. `generateObject`는 v7에서 폐기 예정이라 쓰지 않는다. 직접 호출하지 말고 `lib/agent/llm.ts`의 `callStructured()`를 쓴다 |
 | LLM 모델 | `claude-haiku-5-5` (환경변수 `LLM_MODEL`) | 이미지 읽기 지원. 품질이 부족하면 analyzeIssues 단계만 `claude-sonnet-5-5`로 교체 |
 | PDF | 인쇄 전용 페이지 + `window.print()` (인쇄 CSS) | 별도 PDF 라이브러리 없이 |
 | 배포 | Vercel | 환경변수는 Vercel 대시보드에 |
@@ -423,7 +423,7 @@ runAnalysis(caseId):
  11. analyses에 version+1로 저장, 반환
 ```
 
-- 각 LLM 호출은 `generateObject` + zod 스키마. 스키마 검증 실패 시 1회 재시도, 그래도 실패하면 해당 단계 결과를 빈 배열로 두고 화면에 `일부 분석에 실패했어요. 다시 분석하기를 눌러주세요.` 표시(앱이 멈추면 안 됨).
+- 각 LLM 호출은 `lib/agent/llm.ts`의 `callStructured()`(내부적으로 `generateText` + `Output.object`) + zod 스키마. 스키마 검증 실패 시 1회 재시도, 그래도 실패하면 해당 단계 결과를 빈 배열로 두고 화면에 `일부 분석에 실패했어요. 다시 분석하기를 눌러주세요.` 표시(앱이 멈추면 안 됨).
 - 모든 CaseEvent는 sources가 1개 이상이어야 한다. 없으면 버린다(코드 검증).
 - LLM이 반환한 seq가 실제 messages 범위 밖이면 버린다(환각 방지, 코드 검증).
 
