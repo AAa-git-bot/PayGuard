@@ -1,0 +1,395 @@
+{
+  "version": 1,
+  "summary": "6/2 로고 디자인을 80만 원에 하기로 했고, 6/3 선금 40만 원이 입금됐어요. 수정 4회차까지 반영한 최종본을 6/20 전달했지만, 상대방은 6/21 최종본이 마음에 안 든다며 잔금 지급을 미뤘어요. 나는 6/28과 7/5 잔금 40만 원을 요청했고, 이 자료에는 상대방 답이 없어요.",
+  "oneSided": true,
+  "changedFromPrev": [],
+  "events": [
+    {
+      "id": "ev-quote",
+      "who": "me",
+      "type": "promise",
+      "what": "시안 2종과 최종 파일(AI, PNG) 기준 80만 원을 제안했고, 상대방이 동의했어요.",
+      "sentAt": "2026-06-02T14:15:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": 800000,
+      "agreedByOther": "yes",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 3,
+          "seqTo": 4,
+          "quote": "로고 디자인은 시안 2종 + 최종 파일(AI, PNG) 기준으로 80만 원이에요."
+        }
+      ]
+    },
+    {
+      "id": "ev-rev-cap",
+      "who": "me",
+      "type": "promise",
+      "what": "수정은 2번까지 포함이라고 말했고, 이 조건에 대한 상대방 답은 없어요.",
+      "sentAt": "2026-06-02T14:22:00+09:00",
+      "eventDate": "2026-06-02",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 6,
+          "seqTo": 7,
+          "quote": "그리고 수정은 2번까지 포함이에요."
+        }
+      ]
+    },
+    {
+      "id": "ev-deposit",
+      "who": "counterparty",
+      "type": "payment",
+      "what": "상대방이 선금 40만 원을 보냈다고 했고, 다음 날 내가 어제 받은 선금을 확인했다고 답했어요.",
+      "sentAt": "2026-06-04T09:30:00+09:00",
+      "eventDate": "2026-06-03",
+      "amount": 400000,
+      "agreedByOther": "yes",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 12,
+          "seqTo": 13,
+          "quote": "어제 보내주신 선금 확인했어요. 작업 시작하겠습니다!"
+        }
+      ]
+    },
+    {
+      "id": "ev-draft",
+      "who": "me",
+      "type": "delivery",
+      "what": "시안 2종을 전달했고, 상대방이 2번 시안으로 정했어요.",
+      "sentAt": "2026-06-10T18:00:00+09:00",
+      "eventDate": "2026-06-10",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 14,
+          "seqTo": 17,
+          "quote": "사장님 시안 2종 보내드려요!"
+        }
+      ]
+    },
+    {
+      "id": "ev-rev1",
+      "who": "counterparty",
+      "type": "revision_request",
+      "what": "글씨체를 더 둥글게 해 달라는 수정 1회차 요청을 받았고, 6/12 수정본을 보냈어요.",
+      "sentAt": "2026-06-11T10:20:00+09:00",
+      "eventDate": "2026-06-11",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 18,
+          "seqTo": 21,
+          "quote": "근데 글씨체만 조금 더 둥글게 바꿔주실 수 있을까요?"
+        }
+      ]
+    },
+    {
+      "id": "ev-rev2",
+      "who": "counterparty",
+      "type": "revision_request",
+      "what": "컵 아이콘을 더 작게 해 달라는 수정 2회차 요청을 받았고, 6/14 수정본을 보냈어요.",
+      "sentAt": "2026-06-13T13:15:00+09:00",
+      "eventDate": "2026-06-13",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 22,
+          "seqTo": 25,
+          "quote": "컵 아이콘을 조금 더 작게 해주세요"
+        }
+      ]
+    },
+    {
+      "id": "ev-rev3",
+      "who": "counterparty",
+      "type": "revision_request",
+      "what": "색을 더 진하게 해 달라는 세 번째 수정을 요청했고, 6/17 수정본을 보냈어요.",
+      "sentAt": "2026-06-16T16:30:00+09:00",
+      "eventDate": "2026-06-16",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 26,
+          "seqTo": 26,
+          "quote": "색만 조금 더 진하게 해볼 수 있을까요?"
+        },
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 29,
+          "seqTo": 30,
+          "quote": "3회차 수정본 보내드려요"
+        }
+      ]
+    },
+    {
+      "id": "ev-extra-notice",
+      "who": "me",
+      "type": "charge",
+      "what": "3번째 수정이라 추가 비용이 생길 수 있다고 알렸고, 상대방은 '일단 해주세요'라고만 답했어요. 금액은 정하지 않았어요.",
+      "sentAt": "2026-06-16T16:35:00+09:00",
+      "eventDate": "2026-06-16",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 27,
+          "seqTo": 28,
+          "quote": "사장님, 이번이 3번째 수정이라 추가 비용이 생길 수 있어요."
+        }
+      ]
+    },
+    {
+      "id": "ev-rev4",
+      "who": "counterparty",
+      "type": "change_request",
+      "what": "디자인 방향을 화이트 미니멀로 바꾸자고 했고, 나는 새 시안에 가까운 작업이라 6/20까지 주겠다고 했어요. 상대방이 '네'라고 답했어요.",
+      "sentAt": "2026-06-18T10:10:00+09:00",
+      "eventDate": "2026-06-18",
+      "amount": null,
+      "agreedByOther": "yes",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 31,
+          "seqTo": 33,
+          "quote": "음.. 방향을 바꿔볼게요. 우드톤 말고 화이트 미니멀로요"
+        }
+      ]
+    },
+    {
+      "id": "ev-final",
+      "who": "me",
+      "type": "delivery",
+      "what": "최종본을 AI 파일과 PNG로 전달했어요.",
+      "sentAt": "2026-06-20T19:30:00+09:00",
+      "eventDate": "2026-06-20",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 34,
+          "seqTo": 36,
+          "quote": "최종본 보내드려요! AI 파일과 PNG 같이 드립니다."
+        }
+      ]
+    },
+    {
+      "id": "ev-hold",
+      "who": "counterparty",
+      "type": "complaint",
+      "what": "최종본이 마음에 안 들어 잔금은 생각해 보겠다고 했어요. 어떤 부분이 문제인지는 자료에 없어요.",
+      "sentAt": "2026-06-21T12:40:00+09:00",
+      "eventDate": "2026-06-21",
+      "amount": null,
+      "agreedByOther": "unknown",
+      "certainty": "claimed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 37,
+          "seqTo": 38,
+          "quote": "최종본이 마음에 안 들어서 잔금은 좀 생각해볼게요"
+        }
+      ]
+    },
+    {
+      "id": "ev-ask-balance",
+      "who": "me",
+      "type": "other",
+      "what": "6/28과 7/5 두 차례 잔금 40만 원을 요청했어요. 이 자료에는 상대방 답이 없어요.",
+      "sentAt": "2026-07-05T15:00:00+09:00",
+      "eventDate": "2026-07-05",
+      "amount": 400000,
+      "agreedByOther": "unknown",
+      "certainty": "confirmed",
+      "sources": [
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 39,
+          "seqTo": 40,
+          "quote": "사장님 안녕하세요. 잔금 40만 원 입금 부탁드려요."
+        },
+        {
+          "sourceId": "kakao-haeun",
+          "seqFrom": 41,
+          "seqTo": 42,
+          "quote": "사장님, 잔금 관련해서 다시 연락드려요. 답변 부탁드립니다."
+        }
+      ]
+    }
+  ],
+  "settlement": [
+    {
+      "key": "base",
+      "label": "기본 계약 금액",
+      "amount": 800000,
+      "formula": "800,000",
+      "eventIds": [
+        "ev-quote"
+      ],
+      "status": "confirmed",
+      "note": ""
+    },
+    {
+      "key": "paid",
+      "label": "확인된 지급액",
+      "amount": 400000,
+      "formula": "400,000",
+      "eventIds": [
+        "ev-deposit"
+      ],
+      "status": "confirmed",
+      "note": ""
+    },
+    {
+      "key": "unpaid",
+      "label": "정산상 미지급액",
+      "amount": 400000,
+      "formula": "800,000 - 400,000 = 400,000",
+      "eventIds": [
+        "ev-quote",
+        "ev-deposit"
+      ],
+      "status": "confirmed",
+      "note": ""
+    },
+    {
+      "key": "disputed",
+      "label": "다툼이 있는 추가금",
+      "amount": null,
+      "formula": "추가 수정 단가 미정 → 계산 불가",
+      "eventIds": [
+        "ev-extra-notice"
+      ],
+      "status": "pending",
+      "note": "6/16 추가 비용 안내에 상대방은 '일단 해주세요'라고만 답했고, 금액은 정해지지 않았어요."
+    }
+  ],
+  "issues": [
+    {
+      "id": "issue-extra",
+      "title": "수정 3~4회차는 추가 작업인가?",
+      "myClaim": "포함 수정은 2회이고, 3회차부터는 추가 비용이 생길 수 있다고 미리 알렸어요.",
+      "otherClaim": "자료 없음",
+      "facts": [
+        "6/2 나는 '수정은 2번까지 포함'이라고 말했어요. (#6)",
+        "6/11, 6/13 수정 1·2회차 요청이 있었고 반영됐어요. (#18~25)",
+        "6/16 나는 3번째 수정이라 추가 비용이 생길 수 있다고 알렸고, 상대방은 '일단 해주세요'라고 답했어요. (#26~28)",
+        "6/18 상대방이 방향 변경을 요청했고, 나는 새 시안 작업에 가깝다고 답했어요. (#31~33)"
+      ],
+      "supportsMe": [
+        "ev-rev-cap",
+        "ev-extra-notice",
+        "ev-rev4"
+      ],
+      "supportsOther": [],
+      "toCheck": [
+        "수정 횟수와 추가 수정 단가에 상대방이 동의한 대화",
+        "'일단 해주세요'가 추가 비용까지 받아들인 뜻인지"
+      ],
+      "eventIds": [
+        "ev-rev-cap",
+        "ev-rev3",
+        "ev-extra-notice",
+        "ev-rev4"
+      ]
+    },
+    {
+      "id": "issue-two-revisions",
+      "title": "수정 2회 포함에 상대방이 동의했는가?",
+      "myClaim": "6/2에 수정 2회 포함이라고 미리 말했어요.",
+      "otherClaim": "자료 없음",
+      "facts": [
+        "6/2 '수정은 2번까지 포함이에요' 바로 다음 상대방 메시지는 카페 분위기 이야기예요. (#6~7)",
+        "견적 80만 원에는 '네 그렇게 해요'라는 답이 있어요. (#3~4)"
+      ],
+      "supportsMe": [
+        "ev-rev-cap"
+      ],
+      "supportsOther": [],
+      "toCheck": [
+        "같은 날 다른 대화방 등에서 수정 횟수를 확인한 메시지"
+      ],
+      "eventIds": [
+        "ev-quote",
+        "ev-rev-cap"
+      ]
+    },
+    {
+      "id": "issue-balance",
+      "title": "최종본 불만이 잔금 40만 원 지급에 영향을 주는가?",
+      "myClaim": "요청한 방향대로 최종본을 전달했으니 남은 40만 원을 받아야 해요.",
+      "otherClaim": "최종본이 마음에 들지 않아 잔금은 생각해 보겠다고 했어요.",
+      "facts": [
+        "6/20 최종본을 AI 파일과 PNG로 전달했어요. (#34~36)",
+        "6/21 상대방은 최종본이 마음에 안 든다며 잔금을 미뤘고, 어떤 부분인지는 말하지 않았어요. (#37~38)",
+        "6/28, 7/5 잔금 요청에 대한 상대방 답은 자료에 없어요. (#39~42)"
+      ],
+      "supportsMe": [
+        "ev-quote",
+        "ev-final",
+        "ev-ask-balance"
+      ],
+      "supportsOther": [
+        "ev-hold"
+      ],
+      "toCheck": [
+        "검수 기준이나 잔금 지급 시점을 정한 대화",
+        "상대방이 마음에 들지 않는다고 한 구체적인 부분"
+      ],
+      "eventIds": [
+        "ev-final",
+        "ev-hold",
+        "ev-ask-balance"
+      ]
+    }
+  ],
+  "evidenceRequests": [
+    {
+      "id": "evreq-revision",
+      "question": "수정 횟수와 추가 수정 단가에 상대방이 동의한 대화가 있나요?",
+      "why": "2회 포함 제안에 대한 답이 없고, 추가 비용 금액도 정해지지 않아 3~4회차 추가금을 계산할 수 없어요.",
+      "blocks": [
+        "issue",
+        "settlement"
+      ],
+      "relatedIssueId": "issue-extra"
+    },
+    {
+      "id": "evreq-balance",
+      "question": "검수 기준이나 잔금 지급 시점을 정한 자료가 있나요?",
+      "why": "6/21 잔금 보류 메시지만으로는 지급을 미룰 합의가 있었는지 확인되지 않아요.",
+      "blocks": [
+        "issue"
+      ],
+      "relatedIssueId": "issue-balance"
+    }
+  ]
+}
