@@ -14,6 +14,7 @@ create table sources (
   kind text check (kind in ('kakao_txt','image','text','room_chat')),
   filename text,
   masked_text text,          -- 마스킹 후 텍스트만 저장 (원문 저장 금지)
+  mask_count int default 0,  -- 이 자료에서 가린 개인정보 수 ("개인정보 n건을 가렸어요")
   created_at timestamptz default now()
 );
 
@@ -87,3 +88,11 @@ alter table sources enable row level security;
 alter table messages enable row level security;
 alter table analyses enable row level security;
 alter table documents enable row level security;
+
+-- 메시지 순번: 사건 안에서 seq 중복 방지 + 조회 속도
+create unique index messages_case_seq on messages (case_id, seq);
+create index analyses_case_version on analyses (case_id, version desc);
+
+-- 이미지(이체 내역·영수증) 저장용 Storage 버킷 (비공개, 서버 service_role로만 접근)
+insert into storage.buckets (id, name, public) values ('evidence', 'evidence', false)
+on conflict (id) do nothing;
