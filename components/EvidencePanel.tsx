@@ -119,6 +119,10 @@ export function EvidencePanel({
                     onChange={async (event) => {
                       const files = [...(event.target.files ?? [])];
                       event.target.value = "";
+                      if (files.some((file) => file.size > 3 * 1024 * 1024)) {
+                        setMessage("이미지는 한 장에 3MB 이하로 올려 주세요.");
+                        return;
+                      }
                       void addSource(request.id, await Promise.all(files.map(toUploadFile)));
                     }}
                   />

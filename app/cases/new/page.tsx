@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { readKakao } from "@/components/read-kakao";
+import { parseKakao } from "@/lib/parse-kakao";
 import { toUploadFile } from "@/components/file-payload";
+
+// Vercel 요청 한도(약 4.5MB)와 base64 증가(약 1.3배)를 고려한 이미지 권장 크기
+const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
 
 type Step = "idle" | "case" | "sources" | "analyze";
 
@@ -20,7 +23,11 @@ const STEP_LABEL: Record<Exclude<Step, "idle">, string> = {
 const STEP_ORDER = ["case", "sources", "analyze"] as const;
 
 async function readError(response: Response) {
-  const body = (await response.json().catch(() => ({}))) as { error?: string; id?: string };
+  const body = (await response.json().catch(() => ({}))) as {
+    error?: string;
+    id?: string;
+    participants?: string[];
+  };
   return body;
 }
 
@@ -34,17 +41,34 @@ export default function NewCasePage() {
   const [fileError, setFileError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [step, setStep] = useState<Step>("idle");
+  // 사건은 만들었는데 자료 올리기에서 실패한 경우, 다시 시도할 때 같은 사건을 쓴다
+  const [caseId, setCaseId] = useState<string | null>(null);
+  const [serverParticipants, setServerParticipants] = useState<string[]>([]);
 
+  // 서버와 같은 파서(lib/parse-kakao.ts)로 참여자를 뽑아야 "나" 확인이 어긋나지 않는다
   const participants = useMemo(() => {
     const names = new Set<string>();
     for (const file of kakaoFiles) {
-      for (const name of readKakao(file.text).participants) names.add(name);
+      for (const name of parseKakao(file.text).participants) names.add(name);
     }
     if (paste.trim()) {
-      for (const name of readKakao(paste).participants) names.add(name);
+      for (const name of parseKakao(paste).participants) names.add(name);
     }
+    for (const name of serverParticipants) names.add(name);
     return [...names];
-  }, [kakaoFiles, paste]);
+  }, [kakaoFiles, paste, serverParticipants]);
+
+  function onImages(list: FileList | null) {
+    setFileError(null);
+    const files = [...(list ?? [])];
+    const tooBig = files.filter((file) => file.size > MAX_IMAGE_BYTES);
+    if (tooBig.length > 0) {
+      setFileError(
+        `${tooBig.map((file) => file.name).join(", ")}: 이미지는 3MB 이하로 올려 주세요. 캡처 범위를 줄이거나 압축해 주세요.`,
+      );
+    }
+    setImages(files.filter((file) => file.size <= MAX_IMAGE_BYTES));
+  }
 
   async function onKakaoFiles(list: FileList | null) {
     setFileError(null);
@@ -56,13 +80,11 @@ export default function NewCasePage() {
         setFileError(`${file.name} 파일이 비어 있어요. 카톡에서 내보낸 텍스트를 올려 주세요.`);
         return;
       }
-      if (readKakao(text).lines.length === 0) {
-        setFileError(`${file.name}에서 대화 내용을 찾지 못했어요. PC·모바일 내보내기 형식인지 확인해 주세요.`);
-        return;
-      }
+      // 카톡 형식이 아닌 txt(메모 등)도 일반 텍스트 자료로 받는다
       next.push({ name: file.name, text });
     }
     setKakaoFiles(next);
+    setServerParticipants([]);
     setMe("");
   }
 
@@ -78,21 +100,26 @@ export default function NewCasePage() {
     }
 
     try {
-      setStep("case");
-      const created = await fetch("/api/cases", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: title.trim(), myName: me || null }),
-      });
-      const createdBody = await readError(created);
-      if (!created.ok || !createdBody.id) {
-        setSubmitError(createdBody.error ?? "사건을 만들지 못했어요.");
-        setStep("idle");
-        return;
+      let id = caseId;
+      if (!id) {
+        setStep("case");
+        const created = await fetch("/api/cases", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: title.trim(), myName: me || null }),
+        });
+        const createdBody = await readError(created);
+        if (!created.ok || !createdBody.id) {
+          setSubmitError(createdBody.error ?? "사건을 만들지 못했어요.");
+          setStep("idle");
+          return;
+        }
+        id = createdBody.id;
+        setCaseId(id);
       }
 
       setStep("sources");
-      const sources = await fetch(`/api/cases/${createdBody.id}/sources`, {
+      const sources = await fetch(`/api/cases/${id}/sources`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -107,19 +134,24 @@ export default function NewCasePage() {
       const sourcesBody = await readError(sources);
       if (!sources.ok) {
         setSubmitError(sourcesBody.error ?? "자료를 올리지 못했어요.");
+        if (sourcesBody.participants?.length) {
+          // "나"가 없거나 틀리면 서버가 실제 참여자 목록을 돌려준다 → 다시 고르게 한다
+          setServerParticipants(sourcesBody.participants);
+          setMe("");
+        }
         setStep("idle");
         return;
       }
 
       setStep("analyze");
-      const analyzed = await fetch(`/api/cases/${createdBody.id}/analyze`, { method: "POST" });
+      const analyzed = await fetch(`/api/cases/${id}/analyze`, { method: "POST" });
       const analyzedBody = await readError(analyzed);
       if (!analyzed.ok) {
         setSubmitError(analyzedBody.error ?? "분석을 시작하지 못했어요.");
         setStep("idle");
         return;
       }
-      router.push(`/cases/${createdBody.id}`);
+      router.push(`/cases/${id}`);
     } catch {
       setSubmitError("서버에 연결하지 못했어요. 입력한 내용은 그대로 둘게요.");
       setStep("idle");
@@ -161,13 +193,13 @@ export default function NewCasePage() {
           type="file"
           accept="image/*"
           multiple
-          onChange={(event) => setImages([...(event.target.files ?? [])])}
+          onChange={(event) => onImages(event.target.files)}
         />
         {images.length > 0 ? (
           <p className="text-xs text-muted-foreground">{images.map((file) => file.name).join(", ")}</p>
         ) : null}
         <p className="text-xs text-muted-foreground">
-          이 이미지에 실제 계좌·이름이 있으면 가린 뒤 올려주세요.
+          이 이미지에 실제 계좌·이름이 있으면 가린 뒤 올려주세요. 이미지는 한 장에 3MB 이하를 권장해요.
         </p>
       </div>
 
