@@ -15,10 +15,12 @@ import {
 export function Timeline({
   events,
   changedIds,
+  textSourceIds,
   onOpenSource,
 }: {
   events: CaseEvent[];
   changedIds: Set<string>;
+  textSourceIds: Set<string>; // 원문 메시지가 있는 자료(카톡·텍스트). 없으면 이체 내역 등 이미지 자료
   onOpenSource: (source: SourceRef) => void;
 }) {
   const ordered = [...events].sort((a, b) => {
@@ -74,7 +76,9 @@ export function Timeline({
                     className="rounded-full bg-muted px-2 py-0.5 text-xs text-foreground underline-offset-2 hover:underline"
                     onClick={() => onOpenSource(source)}
                   >
-                    {sourceChip(source.seqFrom, source.seqTo)}
+                    {textSourceIds.has(source.sourceId)
+                      ? sourceChip(source.seqFrom, source.seqTo)
+                      : "이미지 자료"}
                   </button>
                 ))}
               </div>

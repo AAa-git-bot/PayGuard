@@ -15,20 +15,28 @@ const BLOCK_LABEL = {
 
 export function EvidencePanel({
   caseId,
+  live,
   requests,
   changedIds,
   sampleExtra,
+  onReanalyzed,
 }: {
   caseId: string;
+  live: boolean;
   requests: EvidenceRequest[];
   changedIds: Set<string>;
-  sampleExtra?: string;
+  sampleExtra?: string | null;
+  onReanalyzed: () => void;
 }) {
   const [message, setMessage] = useState<string | null>(null);
   const [pendingId, setPendingId] = useState<string | null>(null);
 
   async function addSource(requestId: string | null, files: UploadFile[]) {
     if (files.length === 0) return;
+    if (!live) {
+      setMessage("DB 없이 보는 데모 화면이에요. 첫 화면의 '샘플 사건으로 체험하기'로 시작하면 자료를 추가할 수 있어요.");
+      return;
+    }
     setPendingId(requestId ?? "sample");
     setMessage(null);
     try {
@@ -42,13 +50,15 @@ export function EvidencePanel({
         setMessage(sourceBody.error ?? "자료를 올리지 못했어요. 잠시 후 다시 시도해 주세요.");
         return;
       }
+      setMessage("자료를 올렸어요. AI가 다시 분석하는 중이에요(1~2분 걸릴 수 있어요).");
       const analyze = await fetch(`/api/cases/${caseId}/analyze`, { method: "POST" });
       const analyzeBody = (await analyze.json().catch(() => ({}))) as { error?: string };
       if (!analyze.ok) {
         setMessage(analyzeBody.error ?? "자료는 올렸지만 다시 분석하지 못했어요. 다시 분석하기를 눌러주세요.");
         return;
       }
-      setMessage("자료를 추가하고 다시 분석했어요.");
+      setMessage("자료를 추가하고 다시 분석했어요. 바뀐 부분은 노란 테두리로 표시돼요.");
+      onReanalyzed();
     } catch {
       setMessage("서버에 연결하지 못했어요. 화면은 그대로 둘게요.");
     } finally {
