@@ -5,6 +5,7 @@ create table cases (
   my_name_alias text default '나',
   is_sample boolean default false,
   room_id uuid,
+  my_name_hash text,         -- "나" 이름의 해시 (실명 저장 금지, 자료 추가 시 "나" 찾기용)
   created_at timestamptz default now()
 );
 

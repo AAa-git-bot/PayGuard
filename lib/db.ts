@@ -74,6 +74,7 @@ export async function createCase(input: {
   myNameAlias?: string;
   isSample?: boolean;
   roomId?: string | null;
+  myNameHash?: string | null;
 }): Promise<string> {
   const { data, error } = await getServerDb()
     .from("cases")
@@ -82,6 +83,7 @@ export async function createCase(input: {
       my_name_alias: input.myNameAlias ?? "나",
       is_sample: input.isSample ?? false,
       room_id: input.roomId ?? null,
+      my_name_hash: input.myNameHash ?? null,
     })
     .select("id")
     .single();
@@ -93,6 +95,23 @@ export async function caseExists(caseId: string): Promise<boolean> {
   const { data, error } = await getServerDb().from("cases").select("id").eq("id", caseId).maybeSingle();
   if (error) throw dbError("사건 조회", error);
   return data !== null;
+}
+
+/** 자료 추가에 필요한 사건 정보. 사건이 없으면 null. */
+export async function getCaseMeta(caseId: string): Promise<{ isSample: boolean; myNameHash: string | null } | null> {
+  const { data, error } = await getServerDb()
+    .from("cases")
+    .select("is_sample, my_name_hash")
+    .eq("id", caseId)
+    .maybeSingle();
+  if (error) throw dbError("사건 조회", error);
+  return data ? { isSample: data.is_sample ?? false, myNameHash: data.my_name_hash ?? null } : null;
+}
+
+/** "나"의 이름 해시 저장 (실명은 저장하지 않는다). 나중에 자료를 추가할 때 이름 없이도 "나"를 찾는 데 쓴다. */
+export async function setMyNameHash(caseId: string, hash: string): Promise<void> {
+  const { error } = await getServerDb().from("cases").update({ my_name_hash: hash }).eq("id", caseId);
+  if (error) throw dbError("사건 정보 저장", error);
 }
 
 /** 사건 + 자료 목록 + 메시지 전체 + 최신 분석. 사건이 없으면 null. */

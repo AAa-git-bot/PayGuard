@@ -30,12 +30,13 @@ describe.skipIf(analysisRaw === "")("sample_analysis.json", () => {
     expect(r.success ? [] : r.error.issues.slice(0, 5)).toEqual([]);
   });
 
-  it("sourceId는 kakao_haeun / transfer_haeun, seq는 카톡 메시지 범위 안", () => {
+  it("sourceId는 kakao-haeun / transfer-haeun(밑줄도 가능), seq는 카톡 메시지 범위 안", () => {
     const max = kakao.messages.length;
     for (const ev of data.events) {
       for (const s of ev.sources) {
-        expect(["kakao_haeun", "transfer_haeun"]).toContain(s.sourceId);
-        if (s.sourceId === "kakao_haeun") {
+        const sid = String(s.sourceId).replace(/-/g, "_");
+        expect(["kakao_haeun", "transfer_haeun"]).toContain(sid);
+        if (sid === "kakao_haeun") {
           expect(s.seqFrom).toBeGreaterThanOrEqual(1);
           expect(s.seqTo).toBeLessThanOrEqual(max);
           expect(s.seqFrom).toBeLessThanOrEqual(s.seqTo);
