@@ -5,3 +5,4 @@
 - 2026-11-21 | 민수빈 | Claude | Next.js 뼈대, 공통 타입(lib/types.ts), LLM 래퍼, 프롬프트, 정산 계산 초안 생성 | 
 - 2026-11-21 | 최서은 | Claude Code | transfer_haeun.png를 Python(Pillow) 코드로 그림(이미지 생성 AI 미사용, 가상 데이터·홍*동·***-**-**** 가림), sample_analysis.json을 kakao_haeun.txt seq에 맞춰 작성, 결과·첫·업로드 화면 다듬기 | 정산 계산·seq·인용문·AnalysisSchema를 코드로 검증
 - 2026-11-21 | 민수빈 | Claude Code | 분석 파이프라인·실행 스크립트 생성 | 샘플 대화로 결과 검증
+- 2026-11-22 | 이다은 | Claude Code | 예방 모드 API(방 생성·메시지·조건 확인·분쟁 분석 전환)와 내용증명 문서 API, lib/db.ts 채팅방·문서 함수 작성, data/next_steps.md 초안(공식 출처 검색) 작성 | 실제 DB·LLM 동작과 next_steps.md 연락처는 직접 확인 예정
