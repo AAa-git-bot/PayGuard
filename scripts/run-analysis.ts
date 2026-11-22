@@ -3,6 +3,7 @@
 //   npx tsx scripts/run-analysis.ts --extract   1단계: 추출 결과만 (kakao_haeun.txt)
 //   npx tsx scripts/run-analysis.ts             v1(kakao_haeun) → v2(+kakao_haeun_extra) 비교
 //   npx tsx scripts/run-analysis.ts --save      위 결과를 data/sample/sample_analysis_real(_v2).json으로 저장
+//   --from-sample                                앱 샘플 흐름: sample_analysis.json(v1) → 다시 분석하기 / 추가 증거 넣기
 //   --image [경로]                               이체 내역·영수증 이미지 추가 (경로 생략 시 data/sample/transfer_haeun.png)
 //
 // .env.local의 ANTHROPIC_API_KEY, LLM_MODEL을 읽는다.
@@ -19,7 +20,7 @@ import {
   type AnalyzeResult,
 } from "../lib/agent/pipeline";
 import { maskText } from "../lib/mask";
-import type { Analysis, CaseEvent, CaseImage, CaseMessage } from "../lib/types";
+import { AnalysisSchema, type Analysis, type CaseEvent, type CaseImage, type CaseMessage } from "../lib/types";
 
 const ROOT = path.resolve(__dirname, "..");
 const SAMPLE = path.join(ROOT, "data", "sample");
@@ -175,6 +176,12 @@ async function main() {
   }
 
   const images = loadImage(imagePath);
+
+  if (args.includes("--from-sample")) {
+    await runFromSample(base, images);
+    return;
+  }
+
   const v1 = await analyzeMessages(base.messages, images, null);
   printAnalysis("v1: kakao_haeun.txt", v1);
 
@@ -192,6 +199,37 @@ async function main() {
     fs.writeFileSync(out2, JSON.stringify(v2.analysis, null, 2) + "\n");
     console.log(`\n저장: ${path.relative(ROOT, out1)}, ${path.relative(ROOT, out2)}`);
   }
+}
+
+// 앱의 샘플 흐름 재현: sample_analysis.json(사람이 검토한 v1) → "다시 분석하기" / "샘플 추가 증거 넣기"
+// sourceId는 샘플 API(app/api/sample)처럼 바꾼다: transfer_haeun → 이미지 자료, 나머지 → 카톡 자료
+async function runFromSample(base: ParsedFile, images: CaseImage[]) {
+  const raw = JSON.parse(fs.readFileSync(path.join(SAMPLE, "sample_analysis.json"), "utf8")) as Analysis;
+  const kakaoId = base.messages[0].sourceId;
+  const imageId = images[0]?.sourceId ?? null;
+  const norm = (s: string) => s.toLowerCase().replace(/[-_]/g, "");
+  const sample = AnalysisSchema.parse({
+    ...raw,
+    events: raw.events.map((e) => ({
+      ...e,
+      sources: e.sources.map((s) => ({ ...s, sourceId: norm(s.sourceId) === "transferhaeun" && imageId ? imageId : kakaoId })),
+    })),
+  });
+  const eligible = (a: Analysis) => {
+    const u = a.settlement.find((l) => l.key === "unpaid");
+    return `미지급 ${won(u?.amount ?? null)} / ${u?.status} → 내용증명 ${u?.status === "confirmed" && (u.amount ?? 0) > 0 ? "생성 가능" : "거부"}`;
+  };
+  console.log(`\n[sample_analysis.json v1] ${eligible(sample)}${images.length ? "" : "  (이미지 없이 실행 중 — --image 권장)"}`);
+
+  const again = await analyzeMessages(base.messages, images, sample);
+  printAnalysis("다시 분석하기 (자료 그대로)", again);
+  console.log(`\n[다시 분석하기] ${eligible(again.analysis)}`);
+
+  const extra = loadKakao("kakao_haeun_extra.txt", base.messages.length + 1);
+  const added = await analyzeMessages([...base.messages, ...extra.messages], images, sample);
+  printAnalysis("샘플 추가 증거 넣기 (+ kakao_haeun_extra.txt)", added);
+  console.log(`\n[샘플 추가 증거 넣기] ${eligible(added.analysis)}`);
+  printComparison(sample, added.analysis);
 }
 
 function printComparison(a: Analysis, b: Analysis) {

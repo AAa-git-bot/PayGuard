@@ -82,17 +82,27 @@ export function computeSettlement(events: CaseEvent[], opts: SettlementOptions =
   const charges = sorted.filter((e) => e.type === "charge" && e.agreedByOther !== "yes");
   const knownCharges = charges.filter((e) => e.amount !== null);
   const policy = opts.revisionPolicy;
-  // 수정 회차: 납품과 납품 사이의 수정 요청 묶음을 1회차로 센다 (같은 회차의 여러 메시지를 따로 세지 않도록)
+  // 수정 회차: 같은 날 연달아 온 수정 요청(사이에 납품 없음)은 1회차로 묶고, 날짜가 바뀌거나 납품이 있었으면 새 회차.
+  // 첫 납품 뒤 상대방의 금액 없는 변경 요청(예: "방향을 바꿔볼게요")도 완성 시안에 대한 수정으로 센다.
+  const day = (e: CaseEvent) => e.eventDate ?? e.sentAt?.slice(0, 10) ?? "";
   const rounds: CaseEvent[][] = [];
   let open = false;
+  let delivered = false;
   for (const e of sorted) {
-    if (e.type === "delivery") open = false;
-    else if (e.type === "revision_request") {
-      if (open) rounds[rounds.length - 1].push(e);
-      else {
-        rounds.push([e]);
-        open = true;
-      }
+    if (e.type === "delivery") {
+      open = false;
+      delivered = true;
+      continue;
+    }
+    const isRevision =
+      e.type === "revision_request" ||
+      (e.type === "change_request" && e.who === "counterparty" && e.amount === null && delivered);
+    if (!isRevision) continue;
+    const last = rounds.at(-1);
+    if (open && last && day(last[0]) === day(e)) last.push(e);
+    else {
+      rounds.push([e]);
+      open = true;
     }
   }
   const extraRounds = policy?.included != null && rounds.length > policy.included ? rounds.slice(policy.included) : [];

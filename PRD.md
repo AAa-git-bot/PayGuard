@@ -448,6 +448,7 @@ runAnalysis(caseId):
 - 보낸 시각(sentAt)은 LLM 답이 아니라 원문 메시지에서 가져온다. quote는 80자로 자른다.
 - 코드 검증 추가
   - 증거 요청: 기본 포함 수정 횟수와 추가 수정 단가가 모두 상대방 동의(agreedByOther=yes)로 확인되면, 그 합의 자료를 다시 묻는 요청은 버린다.
+  - 미지급액이 이미 확인된 값(확인된 기본 금액 − 이체 내역으로 확인된 지급액, 납품 기록 있음)이면, 입금·이체·잔금 여부를 묻는 요청은 paid·unpaid를 보류시키지 않는다(질문은 쟁점용으로 남김). 상대가 돈을 보내지 않았다는 "없는 사실"은 사용자가 증명할 수 없기 때문이다(`releasePaymentBlocks`).
   - 정산 `unknown`(금액 충돌): 같은 type·같은 amountKind의 사건이 서로 다른 금액일 때만 인정한다(총액 80만 원과 선금 40만 원은 충돌이 아님).
   - 쟁점·증거 요청의 eventIds·relatedIssueId는 실제로 있는 id만 남긴다. 쟁점 최대 5개, 증거 요청 최대 4개.
   - 결과에 과실 비율·책임 단정 표현이 섞였는지 점검해 경고 로그를 남긴다(`findVerdictLanguage`).
@@ -466,7 +467,8 @@ unpaid     = base - paid  (base 또는 paid가 null이면 null, status "unverifi
              delivery 이벤트가 없으면 status "pending", note "납품 완료 여부 확인 필요"
 disputed   = charge 이벤트 중 agreedByOther!="yes"인 amount 합 (단가 미정이면 amount null)
              + 기본 포함 횟수를 넘은 수정 회차 × 추가 수정 단가 (예: "2회 × 50,000 = 100,000", 곱셈도 코드가 함)
-             수정 회차 = 납품(delivery)과 납품 사이의 revision_request 묶음을 1회차로 센다
+             수정 회차 = 같은 날 연달아 온 수정 요청(사이에 납품 없음)은 1회차로 묶고, 날짜가 바뀌거나 납품이 있었으면 새 회차
+                         첫 납품 뒤 상대방의 금액 없는 change_request(예: 방향 변경)도 수정 회차로 센다
              기본 포함 횟수 = revisionsIncluded가 있는 최신 사건, 단가 = amountKind "per_revision"인 최신 사건 (동의된 것 우선)
              단가가 없으면 "n회 × 단가 미정", status는 항상 "unverifiable" (추가 작업 여부는 쟁점)
 extra_expense = 영수증 이미지에서 온 지출 합 (배상 가능 여부는 판단하지 않음, note 고정:

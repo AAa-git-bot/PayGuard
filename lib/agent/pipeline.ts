@@ -659,6 +659,27 @@ export async function requestEvidence(
   return { requests, blockedLines };
 }
 
+// 코드 검증: 미지급액이 이미 확인된 값(확인된 기본 금액 − 이체 내역으로 확인된 지급액, 납품 기록 있음)으로 계산됐으면
+// "그 뒤로 입금됐는지" 같은 요청이 지급액·미지급액을 보류시키지 않는다.
+// 상대가 돈을 보내지 않았다는 것(없는 사실)은 사용자가 증명할 수 없고, 추가 입금이 확인되면 그때 paid가 바뀐다.
+// 질문 자체는 남기고(쟁점 확인용), 정산을 보류시키는 연결만 푼다.
+const PAYMENT_TOPIC = /입금|이체|송금|지급|잔금|선금|거래\s*내역|계좌/;
+export function releasePaymentBlocks(settlement: SettlementLine[], evidence: EvidenceResult): void {
+  const paid = settlement.find((l) => l.key === "paid");
+  const unpaid = settlement.find((l) => l.key === "unpaid");
+  if (paid?.status !== "confirmed" || unpaid?.status !== "confirmed" || unpaid.amount === null) return;
+  for (const r of evidence.requests) {
+    if (!PAYMENT_TOPIC.test(`${r.question} ${r.why}`)) continue;
+    const keys = (evidence.blockedLines.get(r.id) ?? []).filter((k) => k !== "paid" && k !== "unpaid");
+    if (keys.length) evidence.blockedLines.set(r.id, keys);
+    else {
+      evidence.blockedLines.delete(r.id);
+      r.blocks = r.blocks.filter((b) => b !== "settlement");
+      if (!r.blocks.length) r.blocks = ["issue"];
+    }
+  }
+}
+
 // 증거 요청이 정산을 막으면 해당 줄을 pending으로 (PRD 7-2 8단계)
 export function applyPending(
   settlement: SettlementLine[],
@@ -680,7 +701,7 @@ const VERDICT_PATTERNS = [
   /과실\s*(비율|비중)?/,
   /책임\s*(비율|비중)/,
   /\d+\s*(%|퍼센트)\s*(책임|과실)/,
-  /승소|패소|이길\s*수|질\s*수/,
+  /승소|패소|소송에서\s*(이길|질)\s*수/,
   /(잘못|귀책)(했|이다|입니다|이에요|은\s*(나|상대방))/,
   /(나|상대방)(의|에게)\s*(잘못|책임)이\s*(있|크)/,
 ];
@@ -760,6 +781,7 @@ export async function analyzeMessages(
       return !(aboutRevisionTerms && onlyDisputed);
     });
   }
+  releasePaymentBlocks(settlement0, evidence);
   const settlement = applyPending(settlement0, evidence.requests, evidence.blockedLines);
 
   // 9. oneSided: 양측이 함께 만든 자료(room_chat)가 없으면 한쪽 제출 자료
