@@ -215,7 +215,7 @@ export async function buildContractDraft(terms: Partial<Terms>): Promise<DraftRe
 // ───────────────────────── DB 연결 ─────────────────────────
 // documents API(POST /api/cases/[id]/documents {kind:"notice_draft", dueDate})가 부른다.
 // ok=false면 reason을 그대로 화면에 보여 주고(예: "먼저 증거 요청을 해결해 주세요"), ok=true면 content를 documents 테이블에 저장한다.
-// TODO(이다은, lib/db.ts): saveDocument(caseId, kind, content) — documents 테이블 insert
+// 저장: lib/db.ts saveDocument(caseId, kind, content) (이다은)
 
 export async function createNoticeDraft(caseId: string, dueDate: string): Promise<DraftResult> {
   const analysis = await getLatestAnalysis(caseId);

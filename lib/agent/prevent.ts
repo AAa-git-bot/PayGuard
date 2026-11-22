@@ -7,7 +7,7 @@
 //       LLM은 callStructured()로만, 넘기는 텍스트는 maskText()를 거친다. AI는 조언만 하고 대신 답하거나 막지 않는다.
 import "server-only";
 import { z } from "zod";
-import { getServerDb } from "../db";
+import { getLatestRoomTerms, getRecentRoomMessages, getRoomMessage, insertRoomMessage } from "../db";
 import { maskText } from "../mask";
 import { TermsSchema, type Terms } from "../types";
 import { callStructured } from "./llm";
@@ -253,78 +253,19 @@ export function planPosts(result: PreventResult, current: Terms | null, recent: 
 }
 
 // ───────────────────────── DB 연결 ─────────────────────────
-// TODO(이다은, lib/db.ts): 아래 임시 쿼리를 db.ts 함수로 옮기면 그걸 쓴다.
-//   getRoomMessage(messageId): Promise<RoomMessage | null>
-//   getRecentRoomMessages(roomId, limit = 40): Promise<RoomMessage[]>   // 오래된 순
-//   getLatestRoomTerms(roomId): Promise<Terms | null>                   // room_terms의 version 최댓값 data
-//   insertRoomMessage(roomId, { sender: "ai", kind, text, payload }): Promise<void>
-
-type RoomMessageRow = {
-  id: string;
-  sender: RoomSender;
-  kind: RoomMessageKind | null;
-  text: string;
-  payload: unknown;
-  created_at: string | null;
-};
-const toMessage = (r: RoomMessageRow): RoomMessage => ({
-  id: r.id,
-  sender: r.sender,
-  kind: r.kind ?? "text",
-  text: r.text,
-  payload: r.payload,
-  createdAt: r.created_at,
-});
-
-async function loadRoomMessage(roomId: string, messageId: string): Promise<RoomMessage | null> {
-  const { data, error } = await getServerDb()
-    .from("room_messages")
-    .select("id, sender, kind, text, payload, created_at")
-    .eq("room_id", roomId)
-    .eq("id", messageId)
-    .maybeSingle();
-  if (error) throw new Error(`메시지를 불러오지 못했어요: ${error.message}`);
-  return data ? toMessage(data as RoomMessageRow) : null;
-}
-
-async function loadRecentRoomMessages(roomId: string): Promise<RoomMessage[]> {
-  const { data, error } = await getServerDb()
-    .from("room_messages")
-    .select("id, sender, kind, text, payload, created_at")
-    .eq("room_id", roomId)
-    .order("created_at", { ascending: false })
-    .limit(RECENT_LIMIT);
-  if (error) throw new Error(`최근 메시지를 불러오지 못했어요: ${error.message}`);
-  return ((data ?? []) as RoomMessageRow[]).map(toMessage).reverse();
-}
-
-async function loadLatestTerms(roomId: string): Promise<Terms | null> {
-  const { data, error } = await getServerDb()
-    .from("room_terms")
-    .select("data")
-    .eq("room_id", roomId)
-    .order("version", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (error) throw new Error(`확정 조건을 불러오지 못했어요: ${error.message}`);
-  const parsed = TermsSchema.safeParse(data?.data);
-  return parsed.success ? parsed.data : null;
-}
+// 쿼리는 lib/db.ts (이다은): getRoomMessage · getRecentRoomMessages · getLatestRoomTerms · insertRoomMessage
 
 async function insertAiMessage(roomId: string, post: PostPlan): Promise<void> {
-  const { error } = await getServerDb()
-    .from("room_messages")
-    .insert({ room_id: roomId, sender: "ai", kind: post.kind, text: post.text, payload: post.payload });
-  if (error) throw new Error(`AI 메시지를 저장하지 못했어요: ${error.message}`);
+  await insertRoomMessage(roomId, { sender: "ai", kind: post.kind, text: post.text, payload: post.payload });
 }
 
 // 메시지 API(POST /api/rooms/[id]/messages)가 사람 메시지를 저장한 뒤 부른다.
 // 응답을 늦추지 않으려면 await 없이 실행해도 된다: `void onRoomMessage(roomId, id).catch(console.error)`
 export async function onRoomMessage(roomId: string, messageId: string): Promise<PreventResult> {
-  const message = await loadRoomMessage(roomId, messageId);
+  const message = await getRoomMessage(roomId, messageId);
   if (!message || message.sender === "ai" || message.kind !== "text") return NONE; // 사람 메시지에만 반응
 
-  const [recent, terms] = await Promise.all([loadRecentRoomMessages(roomId), loadLatestTerms(roomId)]);
+  const [recent, terms] = await Promise.all([getRecentRoomMessages(roomId, RECENT_LIMIT), getLatestRoomTerms(roomId)]);
   const { ok, ...result } = await preventAgent({ messages: recent, terms });
   if (!ok) console.error("[onRoomMessage] 에이전트 호출 실패 — 이번 메시지는 건너뜀");
 
