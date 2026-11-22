@@ -97,6 +97,7 @@ LLM 공급사 사용량 한도를 2026-12-07(본선일)까지 버티도록 설�
 /supabase/schema.sql            ← DB 스키마 (이다은)
 /scripts
   /run-analysis.ts              ← DB 없이 분석 파이프라인 실행·검증 (민수빈, `npx tsx scripts/run-analysis.ts`)
+  /run-prevent.ts               ← DB 없이 예방 모드 에이전트 시나리오 실행 (민수빈, `npx tsx scripts/run-prevent.ts`)
 ```
 
 ---
@@ -492,6 +493,14 @@ onRoomMessage(roomId, newMessage):
 
 - 사람 메시지에만 반응한다(sender="ai" 메시지에는 반응하지 않음, 무한 루프 방지).
 - 응답 지연을 막기 위해 메시지 저장 후 즉시 반환하고 에이전트는 비동기 실행해도 됨.
+
+구현 메모 (민수빈, 2026-11-22):
+- `preventAgent({ messages, terms, today })` → `{ termsUpdate, changeAlert, vagueQuestion, ok }` — DB와 무관. `planPosts(result, terms, recent)` → 게시할 AI 메시지 목록.
+- `onRoomMessage(roomId, messageId)` — 메시지 API가 사람 메시지를 저장한 뒤 부른다(`void onRoomMessage(id, msgId).catch(console.error)`로 비동기 실행 가능). AI 메시지·카드가 아닌 사람 text 메시지에만 반응한다.
+- terms_card의 payload = `{ terms: Terms, changed: string[] }`. terms는 확정 조건 + 이번 변경을 합친 제안(confirmed 둘 다 false, version = 확정 version + 1). 양측이 확인하면 terms API가 이 terms를 room_terms에 저장한다.
+- 코드 검증: 확정 조건과 같은 항목·형식이 틀린 항목(deadline은 YYYY-MM-DD)은 버린다. 아직 확인 안 된 직전 카드와 같으면 다시 올리지 않는다. 확정 조건이 없으면 changeAlert를 쓰지 않는다. 직전 AI 메시지와 같은 말은 반복하지 않는다. 문장은 두 문장 이내로 자른다.
+- vagueQuestion: 날짜·금액·범위에 관한 질문만 남긴다(디자인 세부 표현 "둥글게", "작게"는 묻지 않음). LLM이 놓쳐도 "다음 주쯤·끝나면·대충·적당히" 등은 코드가 기본 질문을 만든다.
+- 검증 스크립트: `npx tsx scripts/run-prevent.ts` (조건 합의 → 양측 확인 → "다음 주쯤" → 수정 3회차 경고 시나리오).
 
 ---
 
