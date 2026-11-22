@@ -88,7 +88,7 @@ export function HomeActions() {
             icon={FileSearch}
             title={loading ? "샘플을 준비하는 중" : "샘플 사건 분석"}
             description="로고 외주 잔금 분쟁 예시로 타임라인·정산표·쟁점 정리를 바로 확인해요."
-            tag="3초 체험"
+            tag="체험 모드"
             primary
             loading={loading}
           />
