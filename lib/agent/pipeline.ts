@@ -381,6 +381,7 @@ function merge(a: ExtractedEvent, b: ExtractedEvent): ExtractedEvent {
   const sentAts = [a.sentAt, b.sentAt].filter((x): x is string => !!x).sort();
   return {
     ...primary,
+    id: primary.id || other.id, // 이전 버전에서 온 사건이 있으면 그 id를 이어 간다
     sentAt: sentAts[0] ?? null,
     eventDate: primary.eventDate ?? other.eventDate,
     agreedByOther: agreed.includes("yes") ? "yes" : agreed.includes("no") ? "no" : "unknown",
@@ -404,14 +405,24 @@ export function normalizeEvents(events: ExtractedEvent[]): ExtractedEvent[] {
   kept.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
 
   // id는 근거 seq 기반으로 만들어 재분석 때도 같은 사건이 같은 id를 갖게 한다 (diff 비교용)
+  // 이전 버전에서 재사용한 사건(사람이 고친 샘플 JSON 포함)은 원래 id를 그대로 쓴다
   const used = new Map<string, number>();
-  return kept.map((e) => {
+  const taken = new Set(kept.map((e) => e.id).filter(Boolean));
+  const kept2 = kept.map((e, i) => (e.id && kept.findIndex((k) => k.id === e.id) === i ? e : { ...e, id: "" }));
+  return kept2.map((e) => {
+    if (e.id) return e;
     const s = minSeq(e);
     const imageSource = e.sources.find((x) => x.seqFrom === 0)?.sourceId ?? "x";
     const base = Number.isFinite(s) ? `ev-${s}-${e.type}` : `ev-img-${imageSource}-${e.type}`;
-    const n = (used.get(base) ?? 0) + 1;
+    let n = used.get(base) ?? 0;
+    let id = "";
+    do {
+      n++;
+      id = n === 1 ? base : `${base}-${n}`;
+    } while (taken.has(id));
     used.set(base, n);
-    return { ...e, id: n === 1 ? base : `${base}-${n}` };
+    taken.add(id);
+    return { ...e, id };
   });
 }
 
