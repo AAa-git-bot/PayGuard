@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AiBadge } from "@/components/AiBadge";
 import { EvidencePanel } from "@/components/EvidencePanel";
 import { IssueCard } from "@/components/IssueCard";
+import { NoticeDraftPanel } from "@/components/NoticeDraftPanel";
 import { SettlementTable } from "@/components/SettlementTable";
 import { SourceModal } from "@/components/SourceModal";
 import { Timeline } from "@/components/Timeline";
@@ -105,7 +106,12 @@ export function CaseResult({ view }: { view: CaseView }) {
         {view.maskedCount > 0 ? (
           <p className="text-xs text-muted-foreground">개인정보 {view.maskedCount}건을 가렸어요</p>
         ) : null}
-        <div className="flex flex-wrap items-center gap-2">{reanalyzeButton}</div>
+        <div className="flex flex-wrap items-center gap-2">
+          {reanalyzeButton}
+          <Link href={`/cases/${id}/report`} className={buttonVariants({ variant: "ghost" })}>
+            사건 정리 자료 보기
+          </Link>
+        </div>
         {reanalyzeHint}
         {noteLine}
       </header>
@@ -148,15 +154,12 @@ export function CaseResult({ view }: { view: CaseView }) {
           />
         </TabsContent>
         <TabsContent value="documents" className="pt-3">
-          <section className="flex flex-col gap-3 rounded-xl bg-card p-4 ring-1 ring-foreground/10">
-            <h2 className="text-base font-semibold">문서</h2>
-            <p className="text-sm leading-6 text-muted-foreground">
-              내용증명 초안과 사건 정리 자료(인쇄/PDF)는 준비 중이에요. 발송 전 사실관계는 직접 확인해야 해요.
-            </p>
-            <Link href={`/cases/${id}/report`} className={buttonVariants({ variant: "outline", className: "w-fit" })}>
-              사건 정리 자료 보기
-            </Link>
-          </section>
+          <NoticeDraftPanel
+            caseId={id}
+            live={view.live}
+            settlement={analysis.settlement}
+            onGoToEvidence={() => setTab("evidence")}
+          />
         </TabsContent>
       </Tabs>
 

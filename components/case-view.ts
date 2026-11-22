@@ -17,5 +17,6 @@ export interface CaseView {
   analysis: Analysis | null;
   lines: SourceLine[];
   maskedCount: number;
+  sourceNames: Record<string, string>; // sourceId → 화면에 보일 자료 이름 (파일명 등)
   sampleExtra: string | null; // 샘플 사건일 때만: "샘플 추가 증거 넣기"용 마스킹된 텍스트
 }

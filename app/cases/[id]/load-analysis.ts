@@ -54,6 +54,16 @@ export async function loadCase(id: string): Promise<CaseView> {
       text: message.text,
     })),
     maskedCount: detail.maskedCount,
+    sourceNames: Object.fromEntries(
+      detail.sources.map((source) => [
+        source.id,
+        source.kind === "image"
+          ? `이미지 자료${source.filename ? ` (${source.filename.split("/").pop()})` : ""}`
+          : source.kind === "room_chat"
+            ? "예방 모드 채팅 기록"
+            : (source.filename ?? "붙여넣은 텍스트"),
+      ]),
+    ),
     sampleExtra: detail.case.isSample ? readSample("kakao_haeun_extra.txt").text : null,
   };
 }
@@ -76,6 +86,7 @@ function loadLocalSample(id: string): CaseView {
       text: message.text,
     })),
     maskedCount: masked.count,
+    sourceNames: { "kakao-haeun": "kakao_haeun.txt", "transfer-haeun": "transfer_haeun.png (이체 내역)" },
     sampleExtra: readSample("kakao_haeun_extra.txt").text,
   };
 }
