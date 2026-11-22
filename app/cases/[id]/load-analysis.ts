@@ -18,6 +18,11 @@ const SAMPLE_NAMES: [string, string][] = [
   ["하은", "나"],
 ];
 
+// 서버(sources API)가 "하은"을 '나'로 찾고 마스킹하므로, 추가 증거는 원본 그대로 보낸다 (가상 데이터)
+function readRawSample(file: string) {
+  return fs.readFileSync(path.join(process.cwd(), "data/sample", file), "utf8");
+}
+
 function readSample(file: string) {
   let text = fs.readFileSync(path.join(process.cwd(), "data/sample", file), "utf8");
   for (const [name, alias] of SAMPLE_NAMES) text = text.replaceAll(name, alias);
@@ -64,7 +69,7 @@ export async function loadCase(id: string): Promise<CaseView> {
             : (source.filename ?? "붙여넣은 텍스트"),
       ]),
     ),
-    sampleExtra: detail.case.isSample ? readSample("kakao_haeun_extra.txt").text : null,
+    sampleExtra: detail.case.isSample ? readRawSample("kakao_haeun_extra.txt") : null,
   };
 }
 
@@ -87,6 +92,6 @@ function loadLocalSample(id: string): CaseView {
     })),
     maskedCount: masked.count,
     sourceNames: { "kakao-haeun": "kakao_haeun.txt", "transfer-haeun": "transfer_haeun.png (이체 내역)" },
-    sampleExtra: readSample("kakao_haeun_extra.txt").text,
+    sampleExtra: readRawSample("kakao_haeun_extra.txt"),
   };
 }

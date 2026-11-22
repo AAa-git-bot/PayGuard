@@ -48,7 +48,8 @@ export function SettlementTable({
         </TableHeader>
         <TableBody>
           {lines.map((line) => {
-            const changed = changedIds.has(line.key);
+            // lib/diff.ts는 정산 줄을 "settlement:<key>"로 표시한다
+            const changed = changedIds.has(`settlement:${line.key}`) || changedIds.has(line.key);
             const unverifiable = line.status === "unverifiable";
             return (
               <TableRow
