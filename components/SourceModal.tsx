@@ -34,7 +34,8 @@ export function SourceModal({
   onClose: () => void;
 }) {
   // 같은 자료(sourceId)에서 해당 seq 앞뒤 2개까지
-  const sameSource = source ? lines.filter((line) => line.sourceId === source.sourceId) : [];
+  const image = source != null && source.seqFrom <= 0;
+  const sameSource = source && !image ? lines.filter((line) => line.sourceId === source.sourceId) : [];
   const windowLines = source
     ? sameSource.filter((line) => line.seq >= source.seqFrom - 2 && line.seq <= source.seqTo + 2)
     : [];
@@ -44,9 +45,11 @@ export function SourceModal({
       <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>
-            {source ? (sameSource.length > 0 ? sourceChip(source.seqFrom, source.seqTo) : "이미지 자료") : "원문"}
+            {source ? (sameSource.length > 0 ? sourceChip(source.seqFrom, source.seqTo) : "이미지") : "원문"}
           </DialogTitle>
-          <DialogDescription>해당 줄과 앞뒤 메시지를 보여 드려요.</DialogDescription>
+          <DialogDescription>
+            {sameSource.length > 0 ? "해당 줄과 앞뒤 메시지를 보여 드려요." : "이미지에서 AI가 읽은 내용이에요."}
+          </DialogDescription>
         </DialogHeader>
         <ul className="flex flex-col gap-2">
           {windowLines.map((line) => {
@@ -65,12 +68,7 @@ export function SourceModal({
             );
           })}
           {source && windowLines.length === 0 ? (
-            <li className="rounded-lg bg-muted px-3 py-2 text-sm">
-              <p className="text-xs text-muted-foreground">
-                대화 원문이 없는 자료(이체 내역·영수증 이미지 등)라 AI가 읽은 내용만 보여 드려요.
-              </p>
-              <p className="mt-1">{source.quote}</p>
-            </li>
+            <li className="rounded-lg bg-yellow-100 px-3 py-2 text-sm">{source.quote}</li>
           ) : null}
         </ul>
       </DialogContent>

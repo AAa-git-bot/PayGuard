@@ -41,3 +41,15 @@ export function monthDay(iso: string | null) {
 export function sourceChip(seqFrom: number, seqTo: number) {
   return seqFrom === seqTo ? `카톡 #${seqFrom}` : `카톡 #${seqFrom}~${seqTo}`;
 }
+
+// 이미지 자료(이체 내역·영수증)에서 온 출처는 seqFrom이 0이다 → "이미지"
+export function isImageSource(source: { sourceId: string; seqFrom: number }, textSourceIds?: Set<string>) {
+  return source.seqFrom <= 0 || (textSourceIds != null && !textSourceIds.has(source.sourceId));
+}
+
+export function sourceLabel(
+  source: { sourceId: string; seqFrom: number; seqTo: number },
+  textSourceIds?: Set<string>,
+) {
+  return isImageSource(source, textSourceIds) ? "이미지" : sourceChip(source.seqFrom, source.seqTo);
+}

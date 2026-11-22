@@ -8,7 +8,7 @@ import {
   EVENT_LABEL,
   PARTY_LABEL,
   monthDay,
-  sourceChip,
+  sourceLabel,
   won,
 } from "@/components/labels";
 
@@ -76,9 +76,7 @@ export function Timeline({
                     className="rounded-full bg-muted px-2 py-0.5 text-xs text-foreground underline-offset-2 hover:underline"
                     onClick={() => onOpenSource(source)}
                   >
-                    {textSourceIds.has(source.sourceId)
-                      ? sourceChip(source.seqFrom, source.seqTo)
-                      : "이미지 자료"}
+                    {sourceLabel(source, textSourceIds)}
                   </button>
                 ))}
               </div>
