@@ -95,6 +95,8 @@ LLM 공급사 사용량 한도를 2026-12-07(본선일)까지 버티도록 설�
   /transfer_haeun.png
   /sample_analysis.json         ← 미리 계산한 샘플 분석 결과
 /supabase/schema.sql            ← DB 스키마 (이다은)
+/scripts
+  /run-analysis.ts              ← DB 없이 분석 파이프라인 실행·검증 (민수빈, `npx tsx scripts/run-analysis.ts`)
 ```
 
 ---
@@ -126,8 +128,8 @@ export type Certainty =
 
 export interface SourceRef {
   sourceId: string;
-  seqFrom: number;   // messages.seq 시작
-  seqTo: number;     // messages.seq 끝
+  seqFrom: number;   // messages.seq 시작 (이미지 자료에서 온 출처는 0 → 화면에 "이미지"로 표시)
+  seqTo: number;     // messages.seq 끝 (이미지는 0)
   quote: string;     // 원문 일부(마스킹된 텍스트, 80자 이내)
 }
 
@@ -142,6 +144,10 @@ export interface CaseEvent {
   agreedByOther: "yes" | "no" | "unknown";
   certainty: Certainty;
   sources: SourceRef[];     // 최소 1개 필수
+  // 정산 계산용 보조 정보 (선택, 화면에 표시하지 않음). 재분석 때 이전 사건을 다시 쓰려고 함께 저장한다.
+  amountKind?: "total" | "deposit" | "balance" | "per_revision" | "expense" | "other" | null;
+               // 금액의 성격: 전체 계약 금액 / 선금 / 잔금 / 추가 수정 1회 단가 / 지출 / 기타
+  revisionsIncluded?: number | null; // 이 사건이 "기본 포함 수정 횟수"를 정한 약속이면 그 횟수
 }
 
 export interface SettlementLine {
@@ -427,16 +433,38 @@ runAnalysis(caseId):
 - 모든 CaseEvent는 sources가 1개 이상이어야 한다. 없으면 버린다(코드 검증).
 - LLM이 반환한 seq가 실제 messages 범위 밖이면 버린다(환각 방지, 코드 검증).
 
+구현 메모 (민수빈, 2026-11-21):
+- 함수 구성
+  - `analyzeMessages(messages, images, prevAnalysis)` → `{ analysis, failedSteps, debug }` — DB와 무관한 전체 파이프라인(2~10단계). 스크립트와 API가 함께 쓴다.
+  - `runAnalysis(caseId)` → `Analysis` — `lib/db.ts`의 `getCase`·`getLatestAnalysis`·`downloadImage`로 읽고 `saveAnalysis`로 저장만 한다. analyze API가 이걸 부른다.
+  - `runAnalysisDetailed(caseId)` → `{ analysis, failedSteps }` — `failedSteps`가 비어 있지 않으면 `일부 분석에 실패했어요...` 안내를 띄운다.
+- 재분석: 이전 버전에 사건이 있는 자료(sourceId)는 그 사건을 그대로 다시 쓰고, **새로 추가된 자료만** 추출한다. 같은 대화를 매번 다시 뽑으면 LLM 분류가 흔들려 changedFromPrev가 의미를 잃기 때문이다.
+- 이벤트 id는 `ev-{첫 근거 seq}-{type}`(이미지는 `ev-img-{sourceId}-{type}`). 버전이 바뀌어도 같은 사건은 같은 id라 diff 비교가 된다.
+- 분석 제외는 sender가 아니라 내용으로 판단한다(사진·이모티콘·입장 알림 등). 붙여넣은 텍스트 자료는 sender `unknown`이지만 분석에 넣는다.
+- 보낸 시각(sentAt)은 LLM 답이 아니라 원문 메시지에서 가져온다. quote는 80자로 자른다.
+- 코드 검증 추가
+  - 증거 요청: 기본 포함 수정 횟수와 추가 수정 단가가 모두 상대방 동의(agreedByOther=yes)로 확인되면, 그 합의 자료를 다시 묻는 요청은 버린다.
+  - 정산 `unknown`(금액 충돌): 같은 type·같은 amountKind의 사건이 서로 다른 금액일 때만 인정한다(총액 80만 원과 선금 40만 원은 충돌이 아님).
+  - 쟁점·증거 요청의 eventIds·relatedIssueId는 실제로 있는 id만 남긴다. 쟁점 최대 5개, 증거 요청 최대 4개.
+  - 결과에 과실 비율·책임 단정 표현이 섞였는지 점검해 경고 로그를 남긴다(`findVerdictLanguage`).
+- 증거 요청이 정산을 막으면 LLM이 지정한 정산 줄(`settlementKeys`, 지정이 없으면 unpaid)을 pending으로 바꾸고 note에 `결론 보류(증거 요청 id): 질문`을 붙인다.
+- `lib/diff.ts`: 문장이 아니라 구조로 비교한다. 이벤트는 유형·누가·금액·사건일·동의·확실성·근거 seq, 쟁점은 연결 이벤트와 근거 문장의 seq 번호, 정산은 금액·계산식·상태·근거가 바뀌었을 때만 changedFromPrev에 넣는다. 새 증거 요청 id도 넣는다.
+
 ### 7-3. 정산 계산 규칙 (`lib/settlement.ts`, 순수 함수)
 
 ```
 base       = 가장 최근의 promise 이벤트 중 amount가 있고 agreedByOther="yes"인 것의 금액
+             (amountKind가 total이거나 비어 있는 promise만 후보. 선금·잔금·단가 약속은 제외)
              없으면 amount 있는 promise 중 최신 → status "unverifiable", note "상대방 동의 확인 안 됨"
 paid       = payment 이벤트 중 certainty="confirmed"인 amount 합
              certainty="claimed"인 입금은 note에 "주장만 있음: n원"으로 별도 표기, 합산하지 않음
 unpaid     = base - paid  (base 또는 paid가 null이면 null, status "unverifiable")
              delivery 이벤트가 없으면 status "pending", note "납품 완료 여부 확인 필요"
 disputed   = charge 이벤트 중 agreedByOther!="yes"인 amount 합 (단가 미정이면 amount null)
+             + 기본 포함 횟수를 넘은 수정 회차 × 추가 수정 단가 (예: "2회 × 50,000 = 100,000", 곱셈도 코드가 함)
+             수정 회차 = 납품(delivery)과 납품 사이의 revision_request 묶음을 1회차로 센다
+             기본 포함 횟수 = revisionsIncluded가 있는 최신 사건, 단가 = amountKind "per_revision"인 최신 사건 (동의된 것 우선)
+             단가가 없으면 "n회 × 단가 미정", status는 항상 "unverifiable" (추가 작업 여부는 쟁점)
 extra_expense = 영수증 이미지에서 온 지출 합 (배상 가능 여부는 판단하지 않음, note 고정:
              "지출 확인과 배상 가능 여부는 별개예요")
 unknown    = 서로 모순되는 금액 이벤트 목록 (amount null, note에 충돌 내용)
@@ -444,6 +472,8 @@ unknown    = 서로 모순되는 금액 이벤트 목록 (amount null, note에 �
 
 - formula는 사람이 읽을 수 있는 계산식 문자열(`800,000 - 400,000 = 400,000`).
 - 단위 테스트: 샘플 사건 기준 base 800000, paid 400000, unpaid 400000.
+- 같은 날짜 안에서는 보낸 시각(sentAt) 순으로 정렬한다.
+- 샘플 검증 결과(scripts/run-analysis.ts): kakao_haeun.txt만 → disputed "2회 × 단가 미정", kakao_haeun_extra.txt 추가 → disputed 100,000. 이체 이미지까지 넣으면 800,000 / 400,000 / 400,000.
 
 ### 7-4. 예방 모드 에이전트 (`lib/agent/prevent.ts`)
 
@@ -466,6 +496,12 @@ onRoomMessage(roomId, newMessage):
 ---
 
 ## 8. 프롬프트 초안 (`lib/agent/prompts.ts`)
+
+아래는 시스템 프롬프트(instructions)다. pipeline.ts는 각 단계의 사용자 입력 앞에 `prompts.ts`의 `*_GUIDE`(출력 필드 쓰는 법)를 붙인다:
+- `EXTRACT_EVENTS_GUIDE`: seq·quote 규칙, "어제" 같은 날짜 계산, amountKind·revisionsIncluded, 완성 시안의 변경 요청(색·방향 등)은 revision_request이고 change_request는 계약 조건 변경에만, 승낙 답장("일단 해주세요")은 새 수정 요청이 아님, 입금 **요청**은 payment가 아니라 other(amountKind balance), 한 메시지에 조건이 여럿이면 조건마다 사건.
+- `DETECT_CONFLICTS_GUIDE`: eventIds는 목록의 id만, 서로 다른 금액이면 involvesAmount.
+- `ANALYZE_ISSUES_GUIDE`: 문장 끝에 `(#12)`·`(#12~14)` 출처, 이전 쟁점과 같은 주제면 같은 id, 정산 금액은 다시 계산하지 않음.
+- `REQUEST_EVIDENCE_GUIDE`: settlementKeys로 보류할 정산 줄 지정, 이전 요청을 새 사건과 대조해 해결된 건 빼고 문장을 그대로 복사하지 않음, 증거 요청은 "자료"만 묻고 쟁점(해석) 자체는 묻지 않음, 채팅에서 동의가 확인된 조건에 별도 문서를 요구하지 않음. 코드가 확인한 조건(`[코드로 확인된 조건]`)과 재분석 때 새로 추가된 사건도 함께 넣는다.
 
 모든 프롬프트 공통 앞부분(`BASE_RULES`):
 
