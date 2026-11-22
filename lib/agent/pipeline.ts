@@ -707,7 +707,7 @@ export function applyPending(
   return settlement.map((line) => {
     const blockers = requests.filter((r) => blockedLines.get(r.id)?.includes(line.key));
     if (!blockers.length) return line;
-    const extra = blockers.map((r) => `결론 보류(증거 요청 ${r.id}): ${r.question}`).join(" · ");
+    const extra = blockers.map((r) => `결론 보류: ${r.question}`).join(" · ");
     return { ...line, status: "pending", note: [line.note, extra].filter(Boolean).join(" · ") };
   });
 }

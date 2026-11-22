@@ -47,7 +47,7 @@ export function NoticeDraftPanel({
       return;
     }
     if (!live) {
-      setMessage("DB 없이 보는 데모 화면이에요. 첫 화면의 '샘플 사건으로 체험하기'로 시작하면 초안을 만들 수 있어요.");
+      setMessage("DB 없이 보는 데모 화면이에요. 첫 화면의 '샘플 사건 분석'으로 시작하면 초안을 만들 수 있어요.");
       return;
     }
     setLoading(true);

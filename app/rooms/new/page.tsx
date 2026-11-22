@@ -62,7 +62,7 @@ export default function NewRoomPage() {
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-5 px-4 py-8 sm:px-8">
       <div>
-        <h1 className="text-2xl font-semibold">예방 모드 채팅방 만들기</h1>
+        <h1 className="text-2xl font-semibold">AI 채팅방 만들기</h1>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           프리랜서와 의뢰인이 함께 쓰는 채팅방이에요. AI가 대화 속 계약 조건(금액·수정 횟수·납기·지급 시기)을
           조건 카드로 정리하고, 양측이 확인할 수 있게 도와드려요.
