@@ -98,6 +98,7 @@ LLM 공급사 사용량 한도를 2026-12-07(본선일)까지 버티도록 설�
 /scripts
   /run-analysis.ts              ← DB 없이 분석 파이프라인 실행·검증 (민수빈, `npx tsx scripts/run-analysis.ts`)
   /run-prevent.ts               ← DB 없이 예방 모드 에이전트 시나리오 실행 (민수빈, `npx tsx scripts/run-prevent.ts`)
+  /run-documents.ts             ← DB 없이 내용증명·계약서 초안 생성 (민수빈, `npx tsx scripts/run-documents.ts`)
 ```
 
 ---
@@ -364,12 +365,14 @@ create table room_terms (
 - 내용: 당사자(나/상대방 표기), 계약 사실, 이행 사실, 미지급 금액(정산표 confirmed 값만), 지급 요청 기한(사용자 입력), 미이행 시 조치 예정(일반 문구).
 - 화면·문서 모두 상단에 `초안 — 발송 전 사실관계를 직접 확인하세요` 워터마크.
 - 정산표에 confirmed 미지급액이 없으면 생성하지 않고 `먼저 증거 요청을 해결해 주세요` 안내.
+- 구현(민수빈): `lib/agent/documents.ts`의 `createNoticeDraft(caseId, dueDate)` → `{ ok: true, content, source } | { ok: false, reason }`. ok=false면 reason을 그대로 보여 주고, ok=true면 content(마크다운)를 documents 테이블에 저장한다. dueDate는 `YYYY-MM-DD`. LLM 초안에 정산표 confirmed 값(기본 금액·지급액·미지급액) 말고 다른 금액이 있거나 미지급액·기한이 빠지면 코드 템플릿 초안을 쓴다(`source: "template"`). 워터마크 줄은 코드가 맨 위에 넣는다.
 
 ### P2 — 여유 있을 때 (일요일 22:00 전까지만)
 
 **⑭ 조건 카드 → 용역계약서 초안**
 - 예방 모드 패널 `계약서 초안 만들기` → 확정 Terms로 작업 범위, 수정 횟수, 납기, 대금·지급 시기, 중도 취소 시 정산, 추가 작업 단가 항목을 채운 마크다운 계약서 초안.
 - 비어 있는 항목은 `[협의 필요]`로 남김.
+- 구현(민수빈): `buildContractDraft(terms)` → 같은 `DraftResult`. 추가 수정 단가·중도 취소 정산·저작권은 Terms에 없으므로 항상 `[협의 필요]`. LLM이 빈 항목을 채우거나 다른 금액을 쓰면 템플릿을 쓴다.
 
 **⑮ 다음 단계 안내**
 - 결과 화면 하단 고정 콘텐츠(AI 생성 아님): 상황별 상담 창구와 절차 안내. 내용은 이다은이 공식 출처로 검수한 텍스트를 `data/next_steps.md`에 두고 그대로 렌더링.
