@@ -83,7 +83,10 @@ export const EXTRACT_EVENTS_GUIDE = `[출력 필드 안내]
 - payment는 돈을 실제로 보냈다·받았다는 언급에만 쓴다. 입금을 요청·독촉하는 메시지(예: "잔금 입금 부탁드려요")는
   payment가 아니라 other로 두고 amountKind는 balance로 쓴다.
 - 한 메시지에 여러 조건(금액, 수정 횟수, 단가)이 있으면 조건마다 사건을 따로 만든다.
-- who: 해당 행동을 한 사람(나=me, 상대방=counterparty).`;
+- who: 해당 행동을 한 사람(나=me, 상대방=counterparty).
+- "[PayGuard 기록] ... 양측 확인 완료 조건" 줄은 나와 상대방이 채팅방에서 함께 확인한 조건이다.
+  조건마다 promise 사건으로 만들고 certainty "confirmed", agreedByOther "yes", who "me"로 둔다.
+  같은 조건을 말한 대화 메시지가 있으면 그 seq도 sources에 함께 넣는다.`;
 
 export const DETECT_CONFLICTS_GUIDE = `[출력 필드 안내]
 - conflicts: 서로 모순되는 사건 쌍. eventIds에는 사건 목록의 id만 쓴다. 같은 대상에 대해 서로 다른 금액을 말하면 involvesAmount=true.

@@ -40,6 +40,8 @@ import {
 } from "./prompts";
 
 export const CHUNK_SIZE = 150;
+// 예방 모드 → 분쟁 분석 전환 때 양측이 확인한 조건을 넣는 줄의 머리말 (app/api/rooms/[id]/to-case)
+export const PAYGUARD_RECORD = "[PayGuard 기록]";
 const MAX_ISSUES = 5;
 const MAX_EVIDENCE_REQUESTS = 4;
 const QUOTE_MAX = 80;
@@ -120,7 +122,7 @@ const sortKey = (e: CaseEvent) =>
 
 const won = (n: number) => n.toLocaleString("ko-KR");
 
-const senderLabel = (s: CaseMessage["sender"]) => (s === "me" ? "나" : s === "counterparty" ? "상대방" : "알 수 없음");
+const senderLabel = (s: CaseMessage["sender"]) => (s === "me" ? "나" : s === "counterparty" ? "상대방" : "기록·알 수 없음");
 
 // 시스템 메시지(사진·이모티콘·입장 알림)는 분석에서 제외 (PRD 7-1)
 const SYSTEM_TEXT = /^(사진|사진 \d+장|이모티콘|동영상|음성메시지|삭제된 메시지입니다\.?)$|님이 (들어왔습니다|나갔습니다)/;
@@ -320,6 +322,11 @@ export function validateEvents(raw: RawEvent[], messages: CaseMessage[]): Extrac
 
     // 보낸 시각은 LLM이 아니라 원문 메시지에서 가져온다
     const firstMsg = bySeq.get(Math.min(...sources.map((s) => s.seqFrom)))!;
+    // 예방 모드에서 양측이 확인한 조건 기록이 근거면 확인된 사실이다 (PRD ⑪: Terms 이력은 confirmed 근거)
+    const fromRecord = sources.some((s) => {
+      for (let q = s.seqFrom; q <= s.seqTo; q++) if (bySeq.get(q)?.text.startsWith(PAYGUARD_RECORD)) return true;
+      return false;
+    });
     out.push({
       id: "",
       who: r.who,
@@ -328,8 +335,8 @@ export function validateEvents(raw: RawEvent[], messages: CaseMessage[]): Extrac
       sentAt: firstMsg.sentAt,
       eventDate: normalizeDate(r.eventDate, firstMsg.sentAt),
       amount: r.amount !== null && r.amount > 0 ? r.amount : null,
-      agreedByOther: r.agreedByOther,
-      certainty: r.certainty,
+      agreedByOther: fromRecord && r.type === "promise" ? "yes" : r.agreedByOther,
+      certainty: fromRecord && r.type === "promise" ? "confirmed" : r.certainty,
       sources,
       hints: {
         amountKind: r.amount !== null ? r.amountKind : null,

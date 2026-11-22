@@ -99,6 +99,7 @@ LLM 공급사 사용량 한도를 2026-12-07(본선일)까지 버티도록 설�
   /run-analysis.ts              ← DB 없이 분석 파이프라인 실행·검증 (민수빈, `npx tsx scripts/run-analysis.ts`)
   /run-prevent.ts               ← DB 없이 예방 모드 에이전트 시나리오 실행 (민수빈, `npx tsx scripts/run-prevent.ts`)
   /run-documents.ts             ← DB 없이 내용증명·계약서 초안 생성 (민수빈, `npx tsx scripts/run-documents.ts`)
+  /run-to-case.ts               ← DB 없이 예방 모드 → 분쟁 분석 전환 결과 확인 (민수빈, `npx tsx scripts/run-to-case.ts`)
 ```
 
 ---
@@ -444,6 +445,7 @@ runAnalysis(caseId):
   - `runAnalysisDetailed(caseId)` → `{ analysis, failedSteps }` — `failedSteps`가 비어 있지 않으면 `일부 분석에 실패했어요...` 안내를 띄운다.
 - 재분석: 이전 버전에 사건이 있는 자료(sourceId)는 그 사건을 그대로 다시 쓰고, **새로 추가된 자료만** 추출한다. 같은 대화를 매번 다시 뽑으면 LLM 분류가 흔들려 changedFromPrev가 의미를 잃기 때문이다.
 - 이벤트 id는 `ev-{첫 근거 seq}-{type}`(이미지는 `ev-img-{sourceId}-{type}`). 버전이 바뀌어도 같은 사건은 같은 id라 diff 비교가 된다.
+- 예방 모드에서 넘어온 `[PayGuard 기록] ... 양측 확인 완료 조건` 줄(sender unknown)을 근거로 한 promise는 코드가 certainty "confirmed", agreedByOther "yes"로 둔다 (`PAYGUARD_RECORD`). 검증: `npx tsx scripts/run-to-case.ts`.
 - 분석 제외는 sender가 아니라 내용으로 판단한다(사진·이모티콘·입장 알림 등). 붙여넣은 텍스트 자료는 sender `unknown`이지만 분석에 넣는다.
 - 보낸 시각(sentAt)은 LLM 답이 아니라 원문 메시지에서 가져온다. quote는 80자로 자른다.
 - 코드 검증 추가
