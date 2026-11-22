@@ -6,6 +6,8 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
@@ -50,24 +52,27 @@
 
 :root {
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  --background: oklch(0.985 0.004 260);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.46 0.17 264);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.955 0.012 264);
-  --secondary-foreground: oklch(0.36 0.12 264);
-  --muted: oklch(0.965 0.005 260);
-  --muted-foreground: oklch(0.52 0.015 260);
-  --accent: oklch(0.955 0.012 264);
-  --accent-foreground: oklch(0.36 0.12 264);
+  --background: #fafafa;
+  --foreground: #1f1f22;
+  --card: #ffffff;
+  --card-foreground: #1f1f22;
+  --popover: #ffffff;
+  --popover-foreground: #1f1f22;
+  /* 팔레트: 차콜 #333336 · 코랄 핑크 #F0607A · 연핑크 #FFEDEF · 회색 #6B6B70 · 밝은 회색 #F4F4F5 */
+  --primary: #333336;
+  --primary-foreground: #ffffff;
+  --secondary: #ffedef;
+  --secondary-foreground: #b8304a;
+  --muted: #f4f4f5;
+  --muted-foreground: #6b6b70;
+  --accent: #ffedef;
+  --accent-foreground: #b8304a;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.915 0.008 260);
-  --input: oklch(0.9 0.01 260);
-  --ring: oklch(0.6 0.15 264);
+  --border: #e7e7ea;
+  --input: #e4e4e7;
+  --ring: #f0607a;
+  --brand: #f0607a; /* 강조 글자·숫자·로고 */
+  --brand-strong: #c93a55; /* 흰 배경 위 작은 글씨용 (대비 확보) */
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

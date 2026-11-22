@@ -7,7 +7,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-30 border-b bg-background/85 backdrop-blur print:hidden">
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4 sm:px-8">
         <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-brand text-white">
             <ShieldCheck className="size-4.5" aria-hidden />
           </span>
           PayGuard

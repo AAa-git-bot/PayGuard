@@ -33,7 +33,7 @@ function ActionBody({
         {tag ? (
           <span
             className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-              primary ? "bg-white/15 text-white" : "bg-muted text-muted-foreground"
+              primary ? "bg-brand text-white" : "bg-secondary text-secondary-foreground"
             }`}
           >
             {tag}

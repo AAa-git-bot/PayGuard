@@ -76,9 +76,9 @@ export function EvidencePanel({
         <AiBadge />
       </div>
       {sampleExtra ? (
-        <div className="flex flex-col gap-2 rounded-xl bg-secondary/60 p-3.5 text-sm ring-1 ring-primary/10 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 rounded-xl bg-secondary/60 p-3.5 text-sm ring-1 ring-brand/15 sm:flex-row sm:items-center sm:justify-between">
           <p className="flex items-start gap-2">
-            <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+            <Sparkles className="mt-0.5 size-4 shrink-0 text-brand" aria-hidden />
             샘플 사건의 추가 대화(6/2 수정 횟수·추가 단가 합의)를 한 번에 넣어 볼 수 있어요.
           </p>
           <Button

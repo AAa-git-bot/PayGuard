@@ -19,13 +19,13 @@ import {
 } from "@/components/labels";
 
 const WHO_DOT: Record<string, string> = {
-  me: "bg-primary",
+  me: "bg-brand",
   counterparty: "bg-slate-500",
   ai: "bg-violet-500",
   unknown: "bg-slate-300",
 };
 const WHO_TEXT: Record<string, string> = {
-  me: "text-primary",
+  me: "text-brand-strong",
   counterparty: "text-slate-600",
   ai: "text-violet-600",
   unknown: "text-muted-foreground",
@@ -60,7 +60,7 @@ export function Timeline({
           <p className="mt-0.5 text-xs text-muted-foreground">
             사건 {events.length}개 ·{" "}
             <span className="inline-flex items-center gap-1">
-              <span className="size-2 rounded-full bg-primary" /> 나
+              <span className="size-2 rounded-full bg-brand" /> 나
             </span>{" "}
             <span className="inline-flex items-center gap-1">
               <span className="size-2 rounded-full bg-slate-500" /> 상대방

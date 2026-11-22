@@ -83,7 +83,7 @@ export function IssueCard({
               <h3 className="mt-2 text-lg font-semibold leading-snug">{issue.title}</h3>
 
               <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
-                <div className="rounded-xl border-l-4 border-primary bg-secondary/50 p-3">
+                <div className="rounded-xl border-l-4 border-brand bg-secondary/50 p-3">
                   <p className="text-xs font-semibold text-secondary-foreground">내 주장</p>
                   <p className="mt-1 text-sm leading-6">
                     <Cited text={issue.myClaim} onOpenSeq={onOpenSeq} />

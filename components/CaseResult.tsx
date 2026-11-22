@@ -40,12 +40,12 @@ function Kpis({ lines, onOpen }: { lines: SettlementLine[]; onOpen: () => void }
             key={key}
             type="button"
             onClick={onOpen}
-            className={`rounded-xl p-3 text-left ring-1 transition-colors hover:ring-primary/40 ${
-              highlight ? "bg-primary/5 ring-primary/20" : "bg-muted/50 ring-foreground/5"
+            className={`rounded-xl p-3 text-left ring-1 transition-colors hover:ring-brand/50 ${
+              highlight ? "bg-secondary ring-brand/25" : "bg-muted/60 ring-foreground/5"
             }`}
           >
             <p className="text-xs text-muted-foreground">{label}</p>
-            <p className={`mt-1 text-lg font-bold tabular-nums ${line ? KPI_TONE[line.status] : "text-muted-foreground"}`}>
+            <p className={`mt-1 text-lg font-bold tabular-nums ${line ? (highlight && line.status === "confirmed" ? "text-brand-strong" : KPI_TONE[line.status]) : "text-muted-foreground"}`}>
               {line ? (line.amount != null ? won(line.amount) : line.status === "pending" ? "결론 보류" : "확인 불가") : "-"}
             </p>
             <p className="mt-0.5 text-[11px] text-muted-foreground">{line ? STATUS_LABEL[line.status] : "해당 없음"}</p>

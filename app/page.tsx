@@ -31,13 +31,13 @@ export default function Home() {
       <section className="relative overflow-hidden border-b bg-gradient-to-b from-secondary/70 to-background">
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-14 sm:px-8 sm:py-20">
           <div className="flex max-w-2xl flex-col gap-4">
-            <span className="w-fit rounded-full bg-card px-3 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-primary/15">
+            <span className="w-fit rounded-full bg-card px-3 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-brand/20">
               청년 프리랜서를 위한 분쟁 정리 AI
             </span>
             <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl sm:leading-tight">
               채팅으로 한 약속,
               <br />
-              <span className="text-primary">증거로 정리해 드려요</span>
+              <span className="text-brand">증거로 정리해 드려요</span>
             </h1>
             <p className="text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
               계약서 없이 채팅으로 일하는 청년 프리랜서를 위해, AI가 조건을 기록하고 분쟁이 생기면 증거를 정리해 드려요.
@@ -45,7 +45,7 @@ export default function Home() {
             <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-foreground/80">
               {TRUST.map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-center gap-1.5">
-                  <Icon className="size-4 text-primary" aria-hidden />
+                  <Icon className="size-4 text-brand" aria-hidden />
                   {text}
                 </li>
               ))}
