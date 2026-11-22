@@ -77,7 +77,7 @@ export default function NewCasePage() {
     for (const file of list) {
       const text = await file.text();
       if (!text.trim()) {
-        setFileError(`${file.name} 파일이 비어 있어요. 카톡에서 내보낸 텍스트를 올려 주세요.`);
+        setFileError(`${file.name} 파일이 비어 있어요. 채팅방에서 내보낸 텍스트를 올려 주세요.`);
         return;
       }
       // 카톡 형식이 아닌 txt(메모 등)도 일반 텍스트 자료로 받는다
@@ -173,7 +173,7 @@ export default function NewCasePage() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="kakao">카톡 txt (여러 개)</Label>
+        <Label htmlFor="kakao">채팅 내보내기 txt (여러 개)</Label>
         <Input
           id="kakao"
           type="file"
@@ -205,7 +205,7 @@ export default function NewCasePage() {
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="paste">텍스트 붙여넣기</Label>
-        <Textarea id="paste" value={paste} onChange={(event) => setPaste(event.target.value)} placeholder="카톡 대화를 붙여 넣어요." />
+        <Textarea id="paste" value={paste} onChange={(event) => setPaste(event.target.value)} placeholder="채팅 대화를 붙여 넣어요." />
       </div>
 
       <fieldset className="flex flex-col gap-2">

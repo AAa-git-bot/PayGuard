@@ -39,7 +39,7 @@ export function monthDay(iso: string | null) {
 }
 
 export function sourceChip(seqFrom: number, seqTo: number) {
-  return seqFrom === seqTo ? `카톡 #${seqFrom}` : `카톡 #${seqFrom}~${seqTo}`;
+  return seqFrom === seqTo ? `채팅 #${seqFrom}` : `채팅 #${seqFrom}~${seqTo}`;
 }
 
 // 이미지 자료(이체 내역·영수증)에서 온 출처는 seqFrom이 0이다 → "이미지"
@@ -121,11 +121,11 @@ export function splitNote(note: string): { notes: string[]; needs: string[] } {
   return { notes, needs };
 }
 
-// ───────── 출처 표시 "(#12)", "(#12~14)", "(카톡 #3~4, #6)" ─────────
+// ───────── 출처 표시 "(#12)", "(#12~14)", "(채팅 #3~4, #6)" ─────────
 export type CitedPart = { text: string } | { from: number; to: number };
 export function splitCitations(text: string): CitedPart[] {
   const out: CitedPart[] = [];
-  const re = /\((?:카톡\s*)?(#\d+(?:\s*[~\-–]\s*#?\d+)?(?:\s*,\s*#?\d+(?:\s*[~\-–]\s*#?\d+)?)*)\)/g;
+  const re = /\((?:(?:카톡|채팅)\s*)?(#\d+(?:\s*[~\-–]\s*#?\d+)?(?:\s*,\s*#?\d+(?:\s*[~\-–]\s*#?\d+)?)*)\)/g;
   let last = 0;
   for (const m of text.matchAll(re)) {
     const before = text.slice(last, m.index).trimEnd();

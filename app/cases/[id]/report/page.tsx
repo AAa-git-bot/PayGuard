@@ -225,7 +225,7 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
           <div key={sourceId} className="flex flex-col gap-1">
             <p className="font-medium">
               {view.sourceNames[sourceId] ??
-                (textSourceIds.has(sourceId) ? "카톡 대화" : "이미지 자료")}
+                (textSourceIds.has(sourceId) ? "채팅 대화" : "이미지 자료")}
             </p>
             <ul className="list-disc pl-5">
               {refs.map(({ source, event }) => (

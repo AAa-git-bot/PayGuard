@@ -97,7 +97,7 @@ export function HomeActions() {
           <ActionBody
             icon={Upload}
             title="사건 업로드 & 분석"
-            description="카톡 대화 내보내기 파일과 이체 내역 이미지를 올리면 AI가 증거를 정리해요."
+            description="채팅 대화 내보내기 파일과 이체 내역 이미지를 올리면 AI가 증거를 정리해요."
           />
         </Link>
         <Link href="/rooms/new" className={`${CARD} bg-card ring-foreground/10`}>

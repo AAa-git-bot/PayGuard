@@ -10,7 +10,7 @@ import { PILL, sourceChip } from "@/components/labels";
 function supportText(item: string, events: CaseEvent[]): string {
   const event = events.find((e) => e.id === item);
   if (!event) return item;
-  const seqs = event.sources.filter((s) => s.seqFrom > 0).map((s) => sourceChip(s.seqFrom, s.seqTo).replace("카톡 ", ""));
+  const seqs = event.sources.filter((s) => s.seqFrom > 0).map((s) => sourceChip(s.seqFrom, s.seqTo).replace(/^(카톡|채팅) /, ""));
   return seqs.length ? `${event.what} (${seqs.join(", ")})` : event.what;
 }
 

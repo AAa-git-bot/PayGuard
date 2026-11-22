@@ -11,7 +11,7 @@ const STEPS = [
   {
     icon: MessageSquareText,
     title: "대화와 자료를 올려요",
-    text: "카톡 내보내기 txt, 이체 내역·영수증 이미지, 메모를 그대로 올리면 돼요.",
+    text: "채팅 내보내기 txt, 이체 내역·영수증 이미지, 메모를 그대로 올리면 돼요.",
   },
   {
     icon: CalendarClock,
@@ -35,12 +35,12 @@ export default function Home() {
               청년 프리랜서를 위한 분쟁 정리 AI
             </span>
             <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl sm:leading-tight">
-              카톡으로 한 약속,
+              채팅으로 한 약속,
               <br />
               <span className="text-primary">증거로 정리해 드려요</span>
             </h1>
             <p className="text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-              계약서 없이 카톡으로 일하는 청년 프리랜서를 위해, AI가 조건을 기록하고 분쟁이 생기면 증거를 정리해 드려요.
+              계약서 없이 채팅으로 일하는 청년 프리랜서를 위해, AI가 조건을 기록하고 분쟁이 생기면 증거를 정리해 드려요.
             </p>
             <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-foreground/80">
               {TRUST.map(({ icon: Icon, text }) => (

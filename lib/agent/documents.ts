@@ -26,7 +26,7 @@ const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
 const md = (iso: string | null) => (iso ? `${Number(iso.slice(0, 4))}년 ${Number(iso.slice(5, 7))}월 ${Number(iso.slice(8, 10))}일` : "날짜 확인 불가");
 const seqTag = (e: CaseEvent) => {
   const s = e.sources.filter((x) => x.seqFrom > 0).map((x) => (x.seqFrom === x.seqTo ? `#${x.seqFrom}` : `#${x.seqFrom}~${x.seqTo}`));
-  return s.length ? ` (카톡 ${s.join(", ")})` : e.sources.length ? " (이미지 자료)" : "";
+  return s.length ? ` (채팅 ${s.join(", ")})` : e.sources.length ? " (이미지 자료)" : "";
 };
 const DraftSchema = z.object({ markdown: z.string().describe("마크다운 문서 전체") });
 

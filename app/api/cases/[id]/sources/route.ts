@@ -80,7 +80,7 @@ async function readForm(req: Request): Promise<UploadInput> {
   const input: UploadInput = { texts: [], images: [], myName: str(form.get("myName")) };
   for (const f of form.getAll("kakao").filter(isFile)) {
     if (!/\.txt$/i.test(f.name) && f.type !== "text/plain") {
-      throw new InputError(`'${f.name}'은(는) txt 파일이 아니에요. 카톡 '대화 내보내기' txt를 올려 주세요.`);
+      throw new InputError(`'${f.name}'은(는) txt 파일이 아니에요. 채팅 '대화 내보내기' txt를 올려 주세요.`);
     }
     if (f.size > MAX_TXT_BYTES) throw new InputError(`'${f.name}'이(가) 너무 커요 (5MB까지).`);
     input.texts.push({ filename: f.name, raw: await f.text() });

@@ -75,7 +75,7 @@ export function prepareUpload(
   }
 
   if (kakao.length === 0 && plain.length === 0 && input.images.length === 0) {
-    throw new InputError("카톡 파일, 이미지, 텍스트 중 하나 이상 넣어 주세요.");
+    throw new InputError("채팅 파일, 이미지, 텍스트 중 하나 이상 넣어 주세요.");
   }
 
   const participants = [...new Set(kakao.flatMap((f) => f.parsed.participants))];
